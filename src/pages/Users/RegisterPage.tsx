@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { ToastContext } from "../../hooks/ToastMessage/ToastContext";
 
 const Register = () => {
   const [userName, setUserName] = useState("");
@@ -6,9 +7,10 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isValidRegister, setIsValidRegister] = useState(false);
+  const { showToast } = useContext(ToastContext);
 
   const handleRegister = () => {
-    if (confirmPassword != password) alert("Mật khẩu không trùng khớp!");
+    if (confirmPassword != password) showToast("Mật khẩu không trùng khớp!");
   };
 
   useEffect(() => {
@@ -64,7 +66,7 @@ const Register = () => {
         onClick={() => handleRegister()}
         disabled={!isValidRegister}
         className={`p-2 bg-primary rounded hover:brightness-110 text-white ${
-          !isValidRegister && "bg-gray-400"
+          !isValidRegister && "!bg-gray-400"
         }`}
       >
         Đăng ký
