@@ -1,19 +1,8 @@
-import { useContext, useState } from "react";
-import { ToastContext } from "../../../hooks/ToastMessage/ToastContext";
+import { useState } from "react";
+import UpdateQuantity from "../../../components/Quantity/UpdateQuantity";
 
 const InfoProduct = () => {
   const [quantity, setQuantity] = useState(1);
-  const { showToast } = useContext(ToastContext);
-
-  const increaseQuantity = () => {
-    setQuantity((prev) => prev + 1);
-  };
-
-  const decreaseQuantity = () => {
-    if (quantity - 1 > 0) setQuantity((prev) => prev - 1);
-    else showToast("Số lượng phải lớn hơn 0");
-  };
-
   return (
     <div className="flex gap-4">
       <div className="flex-1 max-w-[50%]">
@@ -45,30 +34,17 @@ const InfoProduct = () => {
           </p>
         </div>
         <p className="text-[25px] font-extrabold">30,000đ</p>
-        <div className="">
+        <div className="flex items-center gap-x-4">
           <p className="text-lg">Màu sắc</p>
-        </div>
-        <div className="flex items-center">
-          <p className="text-lg">Số lượng</p>
-          <div className="ml-4 flex border border-line rounded">
-            <p
-              onClick={() => decreaseQuantity()}
-              className="select-none cursor-pointer hover:bg-gray-200 h-10 aspect-square grid place-items-center border-r border-line"
-            >
-              -
-            </p>
-            <input
-              disabled
-              className="w-16 text-center focus:outline-none"
-              value={quantity}
-            />
-            <p
-              onClick={() => increaseQuantity()}
-              className="select-none cursor-pointer hover:bg-gray-200 h-10 aspect-square grid place-items-center border-l border-line"
-            >
-              +
-            </p>
+          <div className="flex gap-x-2">
+            <div className="h-5 aspect-square bg-red-600 rounded-full border hover:border-black cursor-pointer"></div>
+            <div className="h-5 aspect-square bg-green-600 rounded-full border hover:border-black cursor-pointer"></div>
+            <div className="h-5 aspect-square bg-blue-600 rounded-full border hover:border-black cursor-pointer"></div>
           </div>
+        </div>
+        <div className="flex items-center gap-x-4">
+          <p className="text-lg">Số lượng</p>
+          <UpdateQuantity quantity={quantity} setQuantity={setQuantity} />
         </div>
         <div className="flex gap-4">
           <button className="flex-1 py-3 bg-primary rounded hover:brightness-110">
