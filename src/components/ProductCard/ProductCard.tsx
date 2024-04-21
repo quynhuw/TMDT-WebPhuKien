@@ -1,4 +1,3 @@
-import sample from "../../../assets/image-common/sample.jpeg";
 import { FaRegHeart } from "react-icons/fa";
 import { LiaCartPlusSolid } from "react-icons/lia";
 
@@ -9,7 +8,7 @@ const ProductCard = () => {
         <div className="overflow-hidden rounded ">
           <img
             className="transition-all duration-500 group-hover/item:scale-110"
-            src={sample}
+            src="https://pos.nvncdn.com/cba2a3-7534/ps/20240421_6NyLpJqPFo.jpeg"
             alt=""
           />
         </div>
