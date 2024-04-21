@@ -13,7 +13,7 @@ const ToastMessage = () => {
 
   return (
     <div className={toastClasses}>
-      <div className="relative flex items-center duration-700 justify-between gap-4 rounded-lg border border-line backdrop-blur-md px-4 py-4 shadow-2xl ">
+      <div className="relative flex items-center duration-700 justify-between gap-4 rounded-lg border border-line bg-white px-4 py-4 shadow-2xl ">
         <p className="font-medium max-sm:text-sm">{toast.message}</p>
         <div className="text-2xl text-[#C9EF50]">{toast.icon}</div>
       </div>
