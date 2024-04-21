@@ -45,7 +45,10 @@ const Header = () => {
                 Thoát
               </div>
             </div>
-            <div className="relative transition-all cursor-pointer hover:text-primary">
+            <div
+              onClick={() => navigateTo("/cart")}
+              className="relative transition-all cursor-pointer hover:text-primary"
+            >
               <div className="absolute grid place-items-center left-full top-0 rounded-full h-5 aspect-square bg-red-500 text-white text-[13px] -translate-x-1/2 -translate-y-1/2">
                 1
               </div>
