@@ -35,7 +35,7 @@ const Login = () => {
       <button
         disabled={!isValidLogin}
         className={`p-2 bg-primary rounded hover:brightness-110 text-white ${
-          !isValidLogin && "bg-gray-400"
+          !isValidLogin && "!bg-gray-400"
         }`}
       >
         Đăng nhập
