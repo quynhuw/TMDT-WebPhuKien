@@ -38,7 +38,7 @@ const ForgotPassPage = () => {
         <button
           disabled={!isValidForgotPass}
           className={`p-2 bg-primary rounded hover:brightness-110 text-white ${
-            !isValidForgotPass && "bg-gray-400"
+            !isValidForgotPass && "!bg-gray-400"
           }`}
         >
           Gửi

@@ -69,7 +69,7 @@ const HomePage = () => {
       </section>
       <section className="flex flex-col items-center mx-auto mt-16 max-w-7xl gap-7">
         <div className="text-3xl font-black">Sản phẩm mới</div>
-        <div className="grid grid-cols-4 my-6 gap-14 ">
+        <div className="grid my-6 xl:grid-cols-4 gap-14 md:grid-cols-2 sm:grid-cols-2 ">
           <div className="w-[285px] h-[350px] bg-slate-500"></div>
           <div className="w-[285px] h-[350px] bg-slate-500"></div>
           <div className="w-[285px] h-[350px] bg-slate-500"></div>
@@ -87,7 +87,7 @@ const HomePage = () => {
 
       <section className="flex flex-col items-center mx-auto mt-16 max-w-7xl gap-7">
         <div className="text-3xl font-black">Sản phẩm bán chạy</div>
-        <div className="grid grid-cols-4 my-6 gap-14 ">
+        <div className="grid my-6 xl:grid-cols-4 gap-14 md:grid-cols-2 sm:grid-cols-2 ">
           <div className="w-[285px] h-[350px] bg-slate-500"></div>
           <div className="w-[285px] h-[350px] bg-slate-500"></div>
           <div className="w-[285px] h-[350px] bg-slate-500"></div>

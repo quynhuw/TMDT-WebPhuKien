@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaAngleDown } from "react-icons/fa6";
-import ProductCard from "./components/ProductCard";
+import ProductCard from "../../components/ProductCard/ProductCard";
 
 const ProductsPage = () => {
   const [hiddenFilters, setHiddenFilters] = useState(true);
