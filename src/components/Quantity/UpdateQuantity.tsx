@@ -22,10 +22,10 @@ const UpdateQuantity: React.FC<UpdateQuantityProps> = ({
   };
 
   return (
-    <div className="flex border border-line rounded">
+    <div className="flex border rounded border-line w-fit">
       <p
         onClick={() => decreaseQuantity()}
-        className="select-none cursor-pointer hover:bg-gray-200 h-10 aspect-square grid place-items-center border-r border-line"
+        className="grid h-10 border-r cursor-pointer select-none hover:bg-gray-200 aspect-square place-items-center border-line"
       >
         -
       </p>
@@ -36,7 +36,7 @@ const UpdateQuantity: React.FC<UpdateQuantityProps> = ({
       />
       <p
         onClick={() => increaseQuantity()}
-        className="select-none cursor-pointer hover:bg-gray-200 h-10 aspect-square grid place-items-center border-l border-line"
+        className="grid h-10 border-l cursor-pointer select-none hover:bg-gray-200 aspect-square place-items-center border-line"
       >
         +
       </p>

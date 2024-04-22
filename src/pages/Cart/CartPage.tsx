@@ -1,7 +1,6 @@
-import product1 from "../../assets/image-common/product-1.jpeg";
 import { useNavigate } from "react-router-dom";
-import { IoAddCircleOutline } from "react-icons/io5";
-import { IoRemoveCircleOutline } from "react-icons/io5";
+import CartRow from "./Components/CartRow";
+
 const CartPage = () => {
   const navigate = useNavigate();
 
@@ -23,96 +22,9 @@ const CartPage = () => {
             </tr>
           </thead>
           <tbody>
-            <tr className="mt-4 border-2 border-solid">
-              <td className="py-4">
-                <img
-                  className="w-24 mx-auto rounded-md"
-                  src={product1}
-                  alt=""
-                />
-              </td>
-              <td className="py-4 text-base text-center ">
-                <div className="cursor-pointer hover:text-primary">
-                  Strap đa năng Capybara flying sweat - Mix
-                </div>
-              </td>
-              <td className="py-4 text-base font-bold text-center">
-                <div>50.000đ</div>
-              </td>
-              <td className="py-4 text-base text-center">
-                <div className="flex items-center justify-center gap-5">
-                  <IoAddCircleOutline className="text-3xl cursor-pointer" />
-                  <div className="font-bold">5</div>
-                  <IoRemoveCircleOutline className="text-3xl cursor-pointer" />
-                </div>
-              </td>
-              <td className="py-4 text-base font-bold text-center">
-                <div>250.000đ</div>
-              </td>
-              <td className="py-4 text-xl font-black text-center cursor-pointer">
-                <div className="hover:text-primary">Xóa</div>
-              </td>
-            </tr>
-            <tr className="mt-4 border-2 border-solid">
-              <td className="py-4">
-                <img
-                  className="w-24 mx-auto rounded-md"
-                  src={product1}
-                  alt=""
-                />
-              </td>
-              <td className="py-4 text-base text-center ">
-                <div className="cursor-pointer hover:text-primary">
-                  Strap đa năng Capybara flying sweat - Mix
-                </div>
-              </td>
-              <td className="py-4 text-base font-bold text-center">
-                <div>50.000đ</div>
-              </td>
-              <td className="py-4 text-base text-center">
-                <div className="flex items-center justify-center gap-5">
-                  <IoAddCircleOutline className="text-3xl cursor-pointer" />
-                  <div className="font-bold">5</div>
-                  <IoRemoveCircleOutline className="text-3xl cursor-pointer" />
-                </div>
-              </td>
-              <td className="py-4 text-base font-bold text-center">
-                <div>250.000đ</div>
-              </td>
-              <td className="py-4 text-xl font-black text-center cursor-pointer">
-                <div className="hover:text-primary">Xóa</div>
-              </td>
-            </tr>
-            <tr className="mt-4 border-2 border-solid">
-              <td className="py-4">
-                <img
-                  className="w-24 mx-auto rounded-md"
-                  src={product1}
-                  alt=""
-                />
-              </td>
-              <td className="py-4 text-base text-center ">
-                <div className="cursor-pointer hover:text-primary">
-                  Strap đa năng Capybara flying sweat - Mix
-                </div>
-              </td>
-              <td className="py-4 text-base font-bold text-center">
-                <div>50.000đ</div>
-              </td>
-              <td className="py-4 text-base text-center">
-                <div className="flex items-center justify-center gap-5">
-                  <IoAddCircleOutline className="text-3xl cursor-pointer" />
-                  <div className="font-bold">5</div>
-                  <IoRemoveCircleOutline className="text-3xl cursor-pointer" />
-                </div>
-              </td>
-              <td className="py-4 text-base font-bold text-center">
-                <div>250.000đ</div>
-              </td>
-              <td className="py-4 text-xl font-black text-center cursor-pointer">
-                <div className="hover:text-primary">Xóa</div>
-              </td>
-            </tr>
+            {[11, 1, 1, 1].map((item, index) => (
+              <CartRow />
+            ))}
           </tbody>
         </table>
       </section>
