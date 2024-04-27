@@ -22,7 +22,7 @@ const ProductsPage = () => {
           className={
             hiddenFilters
               ? "hidden "
-              : "absolute z-[1] select-none  top-12 right-4 flex flex-col overflow-hidden bg-white rounded shadow-form"
+              : "absolute z-[1] select-none  top-12 right-0 flex flex-col overflow-hidden bg-white rounded shadow-form"
           }
         >
           <div className="flex items-center py-2 border-b cursor-pointer hover:bg-primary px-7 ">

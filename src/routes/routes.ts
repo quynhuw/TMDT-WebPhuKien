@@ -1,3 +1,4 @@
+import AccountPage from "../pages/Account";
 import CartPage from "../pages/Cart/CartPage";
 import HomePage from "../pages/HomePage/HomePage";
 import ProductDetailPage from "../pages/ProductDetail/ProductDetailPage";
@@ -9,6 +10,7 @@ const pathName = {
   homepage: "/",
   user: "/user",
   forgot_pass: "/forgot_pass",
+  account: "/account",
   product_detail: "/product_detail",
   products: "/products",
   cart: "/cart",
@@ -18,6 +20,7 @@ const routes = [
   { path: pathName.homepage, element: HomePage },
   { path: pathName.user, element: LoginRegister },
   { path: pathName.forgot_pass, element: ForgotPassPage },
+  { path: pathName.account, element: AccountPage },
   { path: pathName.product_detail, element: ProductDetailPage },
   { path: pathName.products, element: ProductsPage },
   { path: pathName.cart, element: CartPage },
