@@ -1,14 +1,42 @@
-import { useState } from "react";
+import { ToastContext } from "@/hooks/ToastMessage/ToastContext";
+import { useContext, useRef, useState } from "react";
 
 const UserProfile = () => {
   const [userName, setUserName] = useState("Phan Quynh");
   const [phone, setPhone] = useState("0999999999");
   const [email, setEmail] = useState("email@gmail.com");
+  const { showToast } = useContext(ToastContext);
+
+  const originalUserName = useRef(userName);
+  const originalPhone = useRef(phone);
+  const originalEmail = useRef(email);
+
+  const isNotChange = () => {
+    return (
+      userName === originalUserName.current &&
+      phone === originalPhone.current &&
+      email === originalEmail.current
+    );
+  };
+  const check = () => {
+    if (!userName || !phone || !email) {
+      showToast("Vui lòng điền đầy đủ thông tin");
+      return;
+    } else {
+      if (/\D/.test(phone)) {
+        showToast("Số điện thoại không hợp lệ");
+        return;
+      }
+      if (!email.includes("@")) {
+        showToast("Email không hợp lệ");
+        return;
+      }
+    }
+    showToast("Cập nhật thông tin thành công");
+  };
 
   const handleSubmit = () => {
-    !userName || !phone || !email
-      ? alert("Vui lòng điền đầy đủ thông tin")
-      : alert("Cập nhật thông tin thành công");
+    isNotChange() ? showToast("Không có thông tin nào thay đổi") : check();
   };
 
   return (

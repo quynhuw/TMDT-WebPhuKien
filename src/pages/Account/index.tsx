@@ -1,6 +1,7 @@
 import { useState } from "react";
 import UserProfile from "./UserProfile";
 import OrdersHistory from "./OrdersHistory";
+import ChangePassword from "./ChangePassword";
 
 const AccountPage = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -47,7 +48,7 @@ const AccountPage = () => {
           ) : activeTab === 1 ? (
             <OrdersHistory />
           ) : (
-            <div>Change password</div>
+            <ChangePassword />
           )}
         </div>
       </div>

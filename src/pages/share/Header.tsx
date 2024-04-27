@@ -60,7 +60,7 @@ const Header = () => {
           </div>
         </div>
       </div>
-      <div className="w-screen p-4 bg-primary">
+      <div className="w-full p-4 bg-primary">
         <div className="flex justify-between mx-auto font-bold text-gray-900 max-w-7xl">
           <div className="transition-all cursor-pointer hover:text-black">
             <p>Ốp điện thoại</p>
