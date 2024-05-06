@@ -1,3 +1,4 @@
+import AdminDashboard from "@/pages/AdminDashboard";
 import AccountPage from "../pages/Account";
 import CartPage from "../pages/Cart/CartPage";
 import HomePage from "../pages/HomePage/HomePage";
@@ -14,6 +15,7 @@ const pathName = {
   product_detail: "/product_detail",
   products: "/products",
   cart: "/cart",
+  admin: "admin_dashboard",
 };
 
 const routes = [
@@ -24,6 +26,7 @@ const routes = [
   { path: pathName.product_detail, element: ProductDetailPage },
   { path: pathName.products, element: ProductsPage },
   { path: pathName.cart, element: CartPage },
+  { path: pathName.admin, element: AdminDashboard },
 ];
 
 export default routes;
