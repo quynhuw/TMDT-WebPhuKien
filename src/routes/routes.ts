@@ -1,3 +1,4 @@
+import PaymentPage from "@/pages/Payment/PaymentPage";
 import CartPage from "../pages/Cart/CartPage";
 import HomePage from "../pages/HomePage/HomePage";
 import ProductDetailPage from "../pages/ProductDetail/ProductDetailPage";
@@ -12,6 +13,7 @@ const pathName = {
   product_detail: "/product_detail",
   products: "/products",
   cart: "/cart",
+  payment: "/payment",
 };
 
 const routes = [
@@ -21,6 +23,7 @@ const routes = [
   { path: pathName.product_detail, element: ProductDetailPage },
   { path: pathName.products, element: ProductsPage },
   { path: pathName.cart, element: CartPage },
+  { path: pathName.payment, element: PaymentPage },
 ];
 
 export default routes;
