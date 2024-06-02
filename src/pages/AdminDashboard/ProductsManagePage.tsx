@@ -4,13 +4,18 @@ const ProductsManagePage = () => {
   const subjects = [
     {
       field: "ID",
-      data: "SP001",
+      data: "DH001",
       width: 1,
     },
     {
       field: "Tên",
-      data: "Ốp điện thoại Silver bow nơ",
-      width: 3,
+      data: "Ốp điện thoại Silver bow nơại Silver bow nơ",
+      width: 2,
+    },
+    {
+      field: "",
+      data: "",
+      width: 1,
     },
     {
       field: "Giá",
@@ -18,18 +23,23 @@ const ProductsManagePage = () => {
       width: 1,
     },
     {
-      field: "Số lượng",
-      data: "23",
+      field: "Đã bán",
+      data: "60",
+      width: 1,
+    },
+    {
+      field: "Còn lại",
+      data: "60",
       width: 1,
     },
     {
       field: "Ngày tạo",
       data: "29/11/2023",
-      width: 2,
+      width: 1,
     },
     {
       field: "Ngày cập nhật",
-      data: "",
+      data: "30/11/2000",
       width: 2,
     },
   ];
