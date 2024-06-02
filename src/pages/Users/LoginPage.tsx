@@ -32,7 +32,7 @@ const Login = () => {
         onChange={(e) => {
           setUserName(e.target.value);
         }}
-        className="border border-line rounded p-2"
+        className="p-2 border rounded border-line"
         type="text"
         placeholder="Email hoặc số điện thoại (*)"
       />
@@ -41,7 +41,7 @@ const Login = () => {
         onChange={(e) => {
           setPassword(e.target.value);
         }}
-        className="border border-line rounded p-2"
+        className="p-2 border rounded border-line"
         type="password"
         placeholder="Mật khẩu (*)"
       />
@@ -58,7 +58,7 @@ const Login = () => {
         onClick={() => {
           navigate("/forgot_pass");
         }}
-        className="text-end underline cursor-pointer hover:text-blue-400"
+        className="underline cursor-pointer text-end hover:text-blue-400"
       >
         Quên mật khẩu?
       </p>
