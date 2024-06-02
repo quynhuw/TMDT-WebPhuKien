@@ -1,11 +1,24 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { login } from "./api/login";
+import { ToastContext } from "@/hooks/ToastMessage/ToastContext";
 
 const Login = () => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [isValidLogin, setIsValidLogin] = useState(false);
   const navigate = useNavigate();
+  const { showToast } = useContext(ToastContext);
+
+  const handleLogin = async () => {
+    const res = await login(userName, password);
+    if (res.success) {
+      navigate("/");
+      showToast("Login successfully!");
+    } else {
+      showToast(res.message);
+    }
+  };
 
   useEffect(() => {
     if (userName != "" && password != "") setIsValidLogin(true);
@@ -34,6 +47,7 @@ const Login = () => {
       />
       <button
         disabled={!isValidLogin}
+        onClick={handleLogin}
         className={`p-2 bg-primary rounded hover:brightness-110 text-white ${
           !isValidLogin && "!bg-gray-400"
         }`}
