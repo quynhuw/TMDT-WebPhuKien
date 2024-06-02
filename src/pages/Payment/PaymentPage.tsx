@@ -1,4 +1,64 @@
+import {
+  getListDistrict,
+  getListProvince,
+  getListWard,
+} from "@/api/ghn_api/Address";
+import { ChangeEvent, useEffect, useState } from "react";
+
 const PaymentPage = () => {
+  const [listProvince, setListProvince] = useState([]);
+  const [listDistrict, setListDistrict] = useState([]);
+  const [listWard, setListWard] = useState([]);
+
+  const [provinceIdSelected, setProvinceIdSelected] = useState(-1);
+  const [districtIdSelected, setDistrictIdSelected] = useState(-1);
+  const [wardIdSelected, setWardIdSelected] = useState(-1);
+
+  const [provinceValSelected, setProvinceValSelected] = useState("");
+  const [districtValSelected, setDistrictValSelected] = useState("");
+  const [wardValSelected, setWardValSelected] = useState("");
+
+  useEffect(() => {
+    getListProvince().then((res) => {
+      setListProvince(() => res.data);
+    });
+  }, []);
+
+  const onChangeProvince = (e: ChangeEvent<HTMLSelectElement>) => {
+    const idSelected = e.target.value;
+    setListDistrict(() => []);
+    setListWard(() => []);
+    if (idSelected === "") {
+      setProvinceIdSelected(() => -1);
+      setProvinceValSelected(() => "");
+      return;
+    }
+
+    const valSelected = e.target.options[e.target.selectedIndex].text;
+    setProvinceIdSelected(() => parseInt(idSelected));
+    setProvinceValSelected(() => valSelected);
+    getListDistrict(parseInt(idSelected)).then((res) => {
+      setListDistrict(() => res.data);
+    });
+  };
+
+  const onChangeDistrict = (e: ChangeEvent<HTMLSelectElement>) => {
+    const idSelected = e.target.value;
+    setListWard(() => []);
+    if (idSelected === "") {
+      setDistrictIdSelected(() => -1);
+      setDistrictValSelected(() => "");
+      return;
+    }
+
+    const valSelected = e.target.options[e.target.selectedIndex].text;
+    setDistrictIdSelected(() => parseInt(idSelected));
+    setDistrictValSelected(() => valSelected);
+    getListWard(parseInt(idSelected)).then((res) => {
+      setListWard(() => res.data);
+    });
+  };
+
   return (
     <div>
       <div className="flex justify-between mx-auto max-w-7xl">
@@ -25,14 +85,35 @@ const PaymentPage = () => {
               className="w-full p-2 border rounded outline-primary border-line"
               placeholder="Email*"
             />
-            <select className="w-full p-2 border rounded outline-primary border-line ">
+            <select
+              onChange={(e) => onChangeProvince(e)}
+              className="w-full p-2 border rounded outline-primary border-line "
+            >
               <option value="">Tỉnh/Thành phố</option>
+              {listProvince.map((province: any) => (
+                <option key={province.ProvinceID} value={province.ProvinceID}>
+                  {province.ProvinceName}
+                </option>
+              ))}
             </select>
-            <select className="w-full p-2 border rounded outline-primary border-line ">
+            <select
+              onChange={(e) => onChangeDistrict(e)}
+              className="w-full p-2 border rounded outline-primary border-line "
+            >
               <option value="">Quận/Huyện</option>
+              {listDistrict.map((district: any) => (
+                <option key={district.DistrictID} value={district.DistrictID}>
+                  {district.DistrictName}
+                </option>
+              ))}
             </select>
             <select className="w-full p-2 border rounded outline-primary border-line ">
               <option value="">Phường/Xã</option>
+              {listWard.map((ward: any) => (
+                <option key={ward.WardCode} value={ward.WardCode}>
+                  {ward.WardName}
+                </option>
+              ))}
             </select>
             <input
               type="text"

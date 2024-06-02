@@ -14,7 +14,10 @@ const Header = () => {
     <div>
       <div className="mx-auto max-w-7xl">
         <div className="flex items-center justify-between h-14 ">
-          <div className="h-full" onClick={() => navigateTo("/homepage")}>
+          <div
+            className="h-full cursor-pointer"
+            onClick={() => navigateTo("/")}
+          >
             <img className="h-full" src={logo} alt="" />
           </div>
 
@@ -22,7 +25,7 @@ const Header = () => {
             <div className="flex-1 px-1 py-1 overflow-hidden rounded-md">
               <input
                 className="w-full px-2 focus:outline-none"
-                type="text"
+                type="search"
                 placeholder="Tìm kiếm sản phẩm"
               />
             </div>
@@ -57,7 +60,7 @@ const Header = () => {
           </div>
         </div>
       </div>
-      <div className="w-screen p-4 bg-primary">
+      <div className="w-full p-4 bg-primary">
         <div className="flex justify-between mx-auto font-bold text-gray-900 max-w-7xl">
           <div className="transition-all cursor-pointer hover:text-black">
             <p>Ốp điện thoại</p>

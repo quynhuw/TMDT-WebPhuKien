@@ -6,6 +6,7 @@ import "./css/banner.css";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoIosArrowBack } from "react-icons/io";
 import clsx from "clsx";
+import { getAllProduct } from "@/api/Product";
 
 const HomePage = () => {
   const banners = [banner1, banner2, banner3];
@@ -16,6 +17,14 @@ const HomePage = () => {
     if (banners.length > 0) {
       setBannerActive(0);
     }
+  }, []);
+
+  useEffect(() => {
+    const getData = async () => {
+      const res = await getAllProduct();
+      console.log(res);
+    };
+    getData();
   }, []);
 
   const handleChangeImage = (direction: number) => {
