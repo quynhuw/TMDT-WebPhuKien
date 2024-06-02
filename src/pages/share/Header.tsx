@@ -2,13 +2,31 @@ import { useNavigate } from "react-router-dom";
 import logo from "../../assets/image-common/logo.png";
 import { FaSearch } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
+import { getUserFromSession } from "@/utils/User";
+import { useEffect, useState } from "react";
 
 const Header = () => {
   const navigate = useNavigate();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [user, setUser] = useState<any>();
 
   function navigateTo(link: string) {
     navigate(link);
   }
+
+  const checkLogged = () => {
+    const userSession = getUserFromSession();
+    setUser(() => (userSession ? userSession : null));
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem("user");
+    setUser(null);
+  };
+
+  useEffect(() => {
+    checkLogged();
+  });
 
   return (
     <div>
@@ -39,14 +57,23 @@ const Header = () => {
                 onClick={() => navigateTo("/user")}
                 className="transition-all cursor-pointer hover:text-primary"
               >
-                Dương Thanh Phụng
+                {user?.username}
               </div>
-              <div
-                onClick={() => navigateTo("/logout")}
-                className="transition-all cursor-pointer hover:text-primary"
-              >
-                Thoát
-              </div>
+              {user ? (
+                <div
+                  onClick={handleLogout}
+                  className="transition-all cursor-pointer hover:text-primary"
+                >
+                  Thoát
+                </div>
+              ) : (
+                <div
+                  onClick={() => navigateTo("/user")}
+                  className="transition-all cursor-pointer hover:text-primary"
+                >
+                  Đăng nhập
+                </div>
+              )}
             </div>
             <div
               onClick={() => navigateTo("/cart")}
