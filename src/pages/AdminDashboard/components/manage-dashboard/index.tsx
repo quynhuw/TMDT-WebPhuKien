@@ -30,24 +30,27 @@ const ManageDashboard: React.FC<ManageDashboardProps> = (props) => {
         </button>
       </div>
       <div className="flex flex-col gap-3">
-        <div className="grid grid-cols-12 pb-2 border-b border-black opacity-80 ">
-          <input type="checkbox" className="flex col-span-1 gap-1" />
-          {subjects.map((subject, index) => {
-            return (
-              <div key={index} className={"col-span-" + subject.width}>
-                {subject.field}
-              </div>
-            );
-          })}
-          <div className="flex col-span-1 gap-1"></div>
-        </div>
-        <div className="grid grid-cols-12 pb-2 border-b border-black opacity-80">
-          <input type="checkbox" className="flex col-span-1 gap-1" />
+        <div className="grid grid-cols-12 pb-2 border-b border-black text-nowrap opacity-80 ">
+          <input type="checkbox" className="w-6 col-span-1" />
           {subjects.map((subject, index) => {
             return (
               <div
                 key={index}
-                className={`w-fit ${"col-span-" + subject.width} `}
+                className={`w-full ${"col-span-" + subject.width}`}
+              >
+                {subject.field}
+              </div>
+            );
+          })}
+          <div className="col-span-1 "></div>
+        </div>
+        <div className="grid grid-cols-12 pb-2 border-b border-black opacity-80">
+          <input type="checkbox" className="w-6 col-span-1" />
+          {subjects.map((subject, index) => {
+            return (
+              <div
+                key={index}
+                className={`w-full  ${"col-span-" + subject.width} `}
               >
                 {subject.data}
               </div>
