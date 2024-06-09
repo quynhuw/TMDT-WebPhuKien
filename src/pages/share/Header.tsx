@@ -26,7 +26,7 @@ const Header = () => {
 
   useEffect(() => {
     checkLogged();
-  });
+  }, []);
 
   return (
     <div>
@@ -79,7 +79,10 @@ const Header = () => {
               onClick={() => navigateTo("/cart")}
               className="relative transition-all cursor-pointer hover:text-primary"
             >
-              <div className="absolute grid place-items-center left-full top-0 rounded-full h-5 aspect-square bg-red-500 text-white text-[13px] -translate-x-1/2 -translate-y-1/2">
+              <div
+                id="cart-quantity"
+                className="absolute grid place-items-center left-full top-0 rounded-full h-5 aspect-square bg-red-500 text-white text-[13px] -translate-x-1/2 -translate-y-1/2"
+              >
                 1
               </div>
               <FaShoppingCart className="text-[30px] " />

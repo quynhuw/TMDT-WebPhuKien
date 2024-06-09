@@ -13,7 +13,7 @@ const pathName = {
   user: "/user",
   forgot_pass: "/forgot_pass",
   account: "/account",
-  product_detail: "/product_detail",
+  product_detail: "/product_detail/:id",
   products: "/products",
   cart: "/cart",
   payment: "/payment",

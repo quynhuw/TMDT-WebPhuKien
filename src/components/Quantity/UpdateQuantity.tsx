@@ -2,17 +2,21 @@ import { useContext } from "react";
 import { ToastContext } from "../../hooks/ToastMessage/ToastContext";
 
 interface UpdateQuantityProps {
+  productQuantity: number;
   quantity: number;
   setQuantity: (quatity: number) => void;
 }
 
 const UpdateQuantity: React.FC<UpdateQuantityProps> = ({
   quantity,
+  productQuantity,
   setQuantity,
 }) => {
   const { showToast } = useContext(ToastContext);
 
   const increaseQuantity = () => {
+    if (quantity >= productQuantity)
+      return showToast("Số lượng sản phẩm không đủ");
     setQuantity(quantity + 1);
   };
 
