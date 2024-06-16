@@ -1,25 +1,19 @@
+import { LoginContext } from "@/hooks/LoginStatus/LoginContext";
 import { ToastContext } from "@/hooks/ToastMessage/ToastContext";
-import { useContext, useRef, useState } from "react";
+import { useContext, useState } from "react";
+import updateInfo from "./api/updateInfo";
 
 const UserProfile = () => {
-  const [userName, setUserName] = useState("Phan Quynh");
-  const [phone, setPhone] = useState("0999999999");
-  const [email, setEmail] = useState("email@gmail.com");
+  const { user, setUser } = useContext(LoginContext);
+  const [userName, setUserName] = useState(user?.username || "");
+  const [phone, setPhone] = useState(user?.phone || "");
   const { showToast } = useContext(ToastContext);
 
-  const originalUserName = useRef(userName);
-  const originalPhone = useRef(phone);
-  const originalEmail = useRef(email);
-
   const isNotChange = () => {
-    return (
-      userName === originalUserName.current &&
-      phone === originalPhone.current &&
-      email === originalEmail.current
-    );
+    return user?.username === userName && user?.phone === phone;
   };
-  const check = () => {
-    if (!userName || !phone || !email) {
+  const check = async () => {
+    if (!userName || !phone) {
       showToast("Vui lòng điền đầy đủ thông tin");
       return;
     } else {
@@ -27,12 +21,11 @@ const UserProfile = () => {
         showToast("Số điện thoại không hợp lệ");
         return;
       }
-      if (!email.includes("@")) {
-        showToast("Email không hợp lệ");
-        return;
-      }
     }
-    showToast("Cập nhật thông tin thành công");
+    const res = await updateInfo(user.id, userName, phone);
+    setUser(res.data);
+
+    showToast(res.message);
   };
 
   const handleSubmit = () => {

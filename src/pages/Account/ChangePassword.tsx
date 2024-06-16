@@ -1,18 +1,34 @@
 import { ToastContext } from "@/hooks/ToastMessage/ToastContext";
 import { useContext, useState } from "react";
+import updatePassword from "./api/updatePassword";
+import { LoginContext } from "@/hooks/LoginStatus/LoginContext";
 
 const ChangePassword = () => {
   const [oldPass, setOldPass] = useState("");
   const [newPass, setNewPass] = useState("");
   const [retypeNewPass, setRetypeNewPass] = useState("");
   const { showToast } = useContext(ToastContext);
+  const { user } = useContext(LoginContext);
 
-  const handleSubmit = () => {
-    !oldPass || !newPass || !retypeNewPass
-      ? showToast("Vui lòng nhập đầy đủ")
-      : newPass !== retypeNewPass
-      ? showToast("Mật khẩu không trùng khớp")
-      : showToast("Cập nhật mật khẩu thành công");
+  const handleSubmit = async () => {
+    if (!oldPass || !newPass || !retypeNewPass) {
+      showToast("Vui lòng nhập đầy đủ");
+      return;
+    }
+    if (newPass !== retypeNewPass) {
+      showToast("Mật khẩu không trùng khớp");
+      return;
+    }
+
+    const res = await updatePassword(user.id, oldPass, newPass);
+    showToast(res.message);
+    reset();
+  };
+
+  const reset = () => {
+    setOldPass("");
+    setNewPass("");
+    setRetypeNewPass("");
   };
 
   return (
