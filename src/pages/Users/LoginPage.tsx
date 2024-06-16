@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "./api/login";
 import { ToastContext } from "@/hooks/ToastMessage/ToastContext";
+import { LoginContext } from "@/hooks/LoginStatus/LoginContext";
 
 const Login = () => {
   const [userName, setUserName] = useState("");
@@ -9,10 +10,12 @@ const Login = () => {
   const [isValidLogin, setIsValidLogin] = useState(false);
   const navigate = useNavigate();
   const { showToast } = useContext(ToastContext);
+  const { setUser } = useContext(LoginContext);
 
   const handleLogin = async () => {
     const res = await login(userName, password);
     if (res.success) {
+      setUser(res.user);
       navigate("/");
       showToast("Login successfully!");
     } else {
