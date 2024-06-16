@@ -4,12 +4,12 @@ const addAddress = async (body: any) => {
     try {
         const url = `${import.meta.env.VITE_API_END_POINT}/address/insert`;
         const res = await axios.post(url, {
-            provinceId: body.provinceId,
-            provinceValue: body.provinceValue,
-            districtId: body.districtId,
-            districtValue: body.districtValue,
-            wardId: body.wardId,
-            wardValue: body.wardValue,
+            provinceId: body.provinceIdSelected,
+            provinceValue: body.provinceValSelected,
+            districtId: body.districtIdSelected,
+            districtValue: body.districtValSelected,
+            wardId: body.wardIdSelected,
+            wardValue: body.wardValSelected,
             subAddress: body.subAddress,
             status: 1,
             customer: {

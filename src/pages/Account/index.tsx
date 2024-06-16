@@ -54,7 +54,7 @@ const AccountPage = () => {
             <div
               onClick={() => setActiveTab(3)}
               className={`  cursor-pointer w-fit hover:text-primary hover:text-opacity-50 ${
-                activeTab === 1 ? "text-primary font-semibold" : "text-black "
+                activeTab === 3 ? "text-primary font-semibold" : "text-black "
               }`}
             >
               Địa chỉ

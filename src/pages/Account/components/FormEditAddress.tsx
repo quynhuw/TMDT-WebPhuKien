@@ -1,5 +1,10 @@
+import {
+  getListDistrict,
+  getListProvince,
+  getListWard,
+} from "@/api/ghn_api/Address";
 import { Button } from "@chakra-ui/react";
-import { useContext, useEffect, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { LoginContext } from "@/hooks/LoginStatus/LoginContext";
 import { ToastContext } from "@/hooks/ToastMessage/ToastContext";
 import updateAddress from "../api/updateAddress";
@@ -18,34 +23,93 @@ const FormEditAddress: React.FC<FormEditAddressProps> = ({
   const { user } = useContext(LoginContext);
   const { showToast } = useContext(ToastContext);
   const [subAddress, setSubAddress] = useState(address?.subAddress);
-  const [wardValue, setWardValue] = useState(address?.wardValue);
-  const [wardId, setWardId] = useState(address?.wardId);
-  const [districtValue, setDistrictValue] = useState(address?.districtValue);
-  const [districtId, setDistrictId] = useState(address?.districtId);
-  const [provinceValue, setProvinceValue] = useState(address?.provinceValue);
-  const [provinceId, setProvinceId] = useState(address?.provinceId);
+  const [listProvince, setListProvince] = useState([]);
+  const [listDistrict, setListDistrict] = useState([]);
+  const [listWard, setListWard] = useState([]);
+
+  const [provinceIdSelected, setProvinceIdSelected] = useState(
+    address.provinceId
+  );
+  const [districtIdSelected, setDistrictIdSelected] = useState(
+    address.districtId
+  );
+  const [wardIdSelected, setWardIdSelected] = useState(address.wardId);
+
+  const [provinceValSelected, setProvinceValSelected] = useState(
+    address.provinceValue
+  );
+  const [districtValSelected, setDistrictValSelected] = useState(
+    address.districtValue
+  );
+  const [wardValSelected, setWardValSelected] = useState(address.wardValue);
+
+  const onChangeProvince = (e: ChangeEvent<HTMLSelectElement>) => {
+    const idSelected = e.target.value;
+    setListDistrict(() => []);
+    setListWard(() => []);
+    if (idSelected === "") {
+      setProvinceIdSelected(() => -1);
+      setProvinceValSelected(() => "");
+      return;
+    }
+
+    setDistrictIdSelected(() => 0);
+    setWardIdSelected(() => 0);
+    const valSelected = e.target.options[e.target.selectedIndex].text;
+    setProvinceIdSelected(() => parseInt(idSelected));
+    setProvinceValSelected(() => valSelected);
+    getListDistrict(parseInt(idSelected)).then((res) => {
+      setListDistrict(() => res.data);
+    });
+  };
+
+  const onChangeDistrict = (e: ChangeEvent<HTMLSelectElement>) => {
+    const idSelected = e.target.value;
+    setListWard(() => []);
+    if (idSelected === "") {
+      setDistrictIdSelected(() => -1);
+
+      return;
+    }
+    setDistrictValSelected(() => "");
+    setWardIdSelected(() => 0);
+    const valSelected = e.target.options[e.target.selectedIndex].text;
+    setDistrictIdSelected(() => parseInt(idSelected));
+    setDistrictValSelected(() => valSelected);
+    getListWard(parseInt(idSelected)).then((res) => {
+      setListWard(() => res.data);
+    });
+  };
+
+  const handleChangeWard = (e: ChangeEvent<HTMLSelectElement>) => {
+    if (e.target.value && e.target.options[e.target.selectedIndex].text) {
+      setWardIdSelected(parseInt(e.target.value));
+      setWardValSelected(e.target.options[e.target.selectedIndex].text);
+    }
+  };
 
   const editAddress = async () => {
     if (
       !subAddress ||
-      !wardId ||
-      !wardValue ||
-      !districtId ||
-      !districtValue ||
-      !provinceId ||
-      !provinceValue
+      !wardIdSelected ||
+      !wardValSelected ||
+      !districtIdSelected ||
+      !districtValSelected ||
+      !provinceIdSelected ||
+      !provinceValSelected
     ) {
+      showToast("Hãy thêm đầy đủ địa chỉ");
       return;
     }
 
     const data = {
       id: address.id,
-      provinceId,
-      provinceValue,
-      districtId,
-      districtValue,
-      wardId,
-      wardValue,
+      provinceIdSelected,
+      provinceValSelected,
+      districtIdSelected,
+      districtValSelected,
+      wardIdSelected,
+      wardValSelected,
       subAddress,
       customerId: user.id,
     };
@@ -55,6 +119,56 @@ const FormEditAddress: React.FC<FormEditAddressProps> = ({
     hide();
     update();
   };
+
+  useEffect(() => {
+    getListProvince().then((res) => {
+      setListProvince(() => res.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (listProvince) {
+      const province = document.getElementById("province");
+      if (province) {
+        const defaultProvince = provinceIdSelected;
+        province.value = defaultProvince;
+        try {
+          getListDistrict(provinceIdSelected).then((res) => {
+            setListDistrict(res.data);
+          });
+        } catch (error) {
+          showToast("Error");
+        }
+      }
+    }
+  }, [listProvince]);
+
+  useEffect(() => {
+    if (listDistrict) {
+      const district = document.getElementById("district");
+      if (district) {
+        const defaultDistrict = districtIdSelected;
+        district.value = defaultDistrict;
+        try {
+          getListWard(districtIdSelected).then((res) => {
+            setListWard(res.data);
+          });
+        } catch (error) {
+          showToast("Error");
+        }
+      }
+    }
+  }, [listDistrict]);
+
+  useEffect(() => {
+    if (listWard) {
+      const ward = document.getElementById("ward");
+      if (ward) {
+        const defaultWard = wardIdSelected;
+        ward.value = defaultWard;
+      }
+    }
+  }, [listWard]);
 
   return (
     <>
@@ -72,61 +186,41 @@ const FormEditAddress: React.FC<FormEditAddressProps> = ({
           onChange={(e) => setSubAddress(e.target.value)}
         />
         <select
-          defaultValue={address.wardId}
-          onChange={(e) => {
-            if (
-              e.target.options[e.target.selectedIndex].text &&
-              e.target.value
-            ) {
-              setWardId(parseInt(e.target.value));
-              setWardValue(e.target.options[e.target.selectedIndex].text);
-            }
-          }}
-          className="p-2 border rounded"
+          id="province"
+          onChange={(e) => onChangeProvince(e)}
+          className="p-2 rounded border"
         >
-          <option>Xã</option>
-          <option value={1}>Thanh An</option>
-          <option value={2}>Thanh An2</option>
-          <option value={3}>Thanh An3</option>
-          <option value={4}>Thanh An4</option>
+          <option value="">Tỉnh/Thành phố</option>
+          {listProvince?.map((province: any) => (
+            <option key={province.ProvinceID} value={province.ProvinceID}>
+              {province.ProvinceName}
+            </option>
+          ))}
         </select>
         <select
-          defaultValue={address.districtId}
-          onChange={(e) => {
-            if (
-              e.target.options[e.target.selectedIndex].text &&
-              e.target.value
-            ) {
-              setDistrictId(parseInt(e.target.value));
-              setDistrictValue(e.target.options[e.target.selectedIndex].text);
-            }
-          }}
-          className="p-2 border rounded"
+          id="district"
+          onChange={(e) => onChangeDistrict(e)}
+          className="p-2 rounded border"
         >
-          <option>Huyện</option>
-          <option value={1}>Mo Cay Bac</option>
-          <option value={2}>Mo Cay Bac2</option>
-          <option value={3}>Mo Cay Bac3</option>
-          <option value={4}>Mo Cay Bac4</option>
+          <option value="">Quận/Huyện</option>
+          {listDistrict?.map((district: any) => (
+            <option key={district.DistrictID} value={district.DistrictID}>
+              {district.DistrictName}
+            </option>
+          ))}
         </select>
         <select
-          defaultValue={address.provinceId}
-          onChange={(e) => {
-            if (
-              e.target.options[e.target.selectedIndex].text &&
-              e.target.value
-            ) {
-              setProvinceId(parseInt(e.target.value));
-              setProvinceValue(e.target.options[e.target.selectedIndex].text);
-            }
-          }}
-          className="p-2 border rounded"
+          id="ward"
+          defaultValue={wardIdSelected}
+          onChange={(e) => handleChangeWard(e)}
+          className="p-2 rounded border"
         >
-          <option>Tỉnh</option>
-          <option value={1}>Ben Tre</option>
-          <option value={2}>Ben Tre2</option>
-          <option value={3}>Ben Tre3</option>
-          <option value={4}>Ben Tre4</option>
+          <option value="">Phường/Xã</option>
+          {listWard?.map((ward: any) => (
+            <option key={ward.WardCode} value={ward.WardCode}>
+              {ward.WardName}
+            </option>
+          ))}
         </select>
 
         <div className="flex gap-x-2">

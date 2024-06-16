@@ -5,12 +5,12 @@ const updateAddress = async (body: any) => {
         const url = `${import.meta.env.VITE_API_END_POINT}/address/update`;
         const res = await axios.put(url, {
             id: body.id,
-            provinceId: body.provinceId,
-            provinceValue: body.provinceValue,
-            districtId: body.districtId,
-            districtValue: body.districtValue,
-            wardId: body.wardId,
-            wardValue: body.wardValue,
+            provinceId: body.provinceIdSelected,
+            provinceValue: body.provinceValSelected,
+            districtId: body.districtIdSelected,
+            districtValue: body.districtValSelected,
+            wardId: body.wardIdSelected,
+            wardValue: body.wardValSelected,
             subAddress: body.subAddress,
             status: 1,
             customer: {
