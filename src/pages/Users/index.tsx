@@ -12,6 +12,7 @@ const LoginRegister = () => {
   return (
     <div className="my-4 w-[600px] max-w-[90%] border border-line mx-auto rounded">
       <div className="flex border-b-2 border-line">
+        <div></div>
         <p
           onClick={() => handleChangeActiveTab(0)}
           className={`cursor-pointer transition-all flex-1 text-center text-primary py-2  border-b-2 ${
