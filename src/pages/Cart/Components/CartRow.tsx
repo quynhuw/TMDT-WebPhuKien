@@ -1,41 +1,68 @@
-import { useState } from "react";
 import UpdateQuantity from "../../../components/Quantity/UpdateQuantity";
+import { CartDetailType } from "@/utils/models";
+import { formatPrice } from "@/utils";
+import { useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
+import { deleteCartDetail } from "../api";
+import { ToastContext } from "@/hooks/ToastMessage/ToastContext";
 
-const CartRow = () => {
-  const [quantity, setQuantity] = useState(1);
+interface CartRowProps {
+  cartDetail: CartDetailType;
+}
+
+const CartRow: React.FC<CartRowProps> = (props) => {
+  const { cartDetail } = props;
+  const [quantity, setQuantity] = useState<number>(cartDetail.quantity || 0);
+  const toast = useContext(ToastContext);
+  const navigate = useNavigate();
+
+  const handleDeleteRow = () => {
+    deleteCartDetail(cartDetail.id).then(() => {
+      toast.showToast("Xóa sản phẩm thành công");
+      window.location.reload();
+    });
+  };
 
   return (
     <tr className="mt-4 border-2 border-solid">
       <td className="py-4">
         <img
-          className="w-24 mx-auto rounded-md"
-          src={"https://pos.nvncdn.com/cba2a3-7534/ps/20240417_gA471lilMa.jpeg"}
+          onClick={() => navigate(`/product_detail/${cartDetail?.product?.id}`)}
+          className="w-24 mx-auto rounded-md cursor-pointer"
+          src={cartDetail?.product?.images?.[0]?.url}
           alt=""
         />
       </td>
       <td className="py-4 text-base text-center ">
-        <div className="cursor-pointer hover:text-primary">
-          Strap đa năng Capybara flying sweat - Mix
+        <div
+          onClick={() => navigate(`/product_detail/${cartDetail?.product?.id}`)}
+          className="cursor-pointer hover:text-primary"
+        >
+          {cartDetail?.product?.name}
         </div>
       </td>
       <td className="py-4 text-base font-bold text-center">
-        <div>50.000đ</div>
+        <div>{formatPrice(cartDetail?.product?.price || 0)}</div>
       </td>
       <td className="py-4 text-base text-center ">
-        {/* <div className="flex items-center justify-center gap-5">
-          <IoAddCircleOutline className="text-3xl cursor-pointer" />
-          <div className="font-bold">5</div>
-          <IoRemoveCircleOutline className="text-3xl cursor-pointer" />
-        </div> */}
         <div className="mx-auto w-fit">
-          <UpdateQuantity quantity={quantity} setQuantity={setQuantity} />
+          <UpdateQuantity
+            productQuantity={cartDetail?.product?.quantity || 0}
+            quantity={quantity}
+            setQuantity={setQuantity}
+            cartDetailID={cartDetail.id}
+          />
         </div>
       </td>
       <td className="py-4 text-base font-bold text-center">
-        <div>250.000đ</div>
+        <div className="total">
+          {formatPrice(quantity * (cartDetail?.product?.price || 0))}
+        </div>
       </td>
       <td className="py-4 text-xl font-black text-center cursor-pointer">
-        <div className="hover:text-primary">Xóa</div>
+        <div onClick={() => handleDeleteRow()} className="hover:text-primary">
+          Xóa
+        </div>
       </td>
     </tr>
   );

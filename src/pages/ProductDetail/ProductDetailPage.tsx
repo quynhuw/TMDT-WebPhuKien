@@ -11,23 +11,21 @@ const ProductDetailPage = () => {
 
   const getProduct = () => {
     const response = detailProduct(Number.parseInt(params.id || "1"));
+
     response.then((res) => {
       if (res.success) {
-        setProduct(() => (res.product ? res.product : null));
+        setProduct(() => res.product);
       }
     });
   };
 
   useEffect(() => {
     getProduct();
-    console.log(12, product);
   }, []);
   return (
     <div className="max-w-[1280px] mx-auto p-4">
       <InfoProduct product={product} />
-      <div className="mt-10">
-        <ViewedProduct />
-      </div>
+      <div className="mt-10">{/* <ViewedProduct /> */}</div>
     </div>
   );
 };

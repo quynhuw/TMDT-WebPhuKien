@@ -1,14 +1,22 @@
+import { formatPrice } from "@/utils";
+import { ProductType } from "@/utils/models";
 import { FaRegHeart } from "react-icons/fa";
 import { LiaCartPlusSolid } from "react-icons/lia";
+import { Link } from "react-router-dom";
 
-const ProductCard = () => {
+interface ProductCardProps {
+  product: ProductType;
+}
+
+const ProductCard: React.FC<ProductCardProps> = (props) => {
+  const { product } = props;
   return (
-    <div className="flex flex-col gap-3">
+    <Link to={`/product_detail/${product.id}`} className="flex flex-col gap-3">
       <div className="relative overflow-hidden cursor-pointer group/item">
         <div className="overflow-hidden rounded ">
           <img
             className="transition-all duration-500 group-hover/item:scale-110"
-            src="https://pos.nvncdn.com/cba2a3-7534/ps/20240421_6NyLpJqPFo.jpeg"
+            src={product.images[0].url}
             alt=""
           />
         </div>
@@ -20,11 +28,9 @@ const ProductCard = () => {
           </div>
         </div>
       </div>
-      <div className="cursor-pointer hover:text-primary">
-        Ốp điện thoại Silver bow nơ
-      </div>
-      <div>60.000 VND</div>
-    </div>
+      <div className="cursor-pointer hover:text-primary">{product.name}</div>
+      <div>{formatPrice(product.price)}</div>
+    </Link>
   );
 };
 export default ProductCard;

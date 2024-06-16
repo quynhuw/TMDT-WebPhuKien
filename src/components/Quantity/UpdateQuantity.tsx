@@ -1,16 +1,19 @@
 import { useContext } from "react";
 import { ToastContext } from "../../hooks/ToastMessage/ToastContext";
+import { updateCarts } from "@/pages/Cart/api";
 
 interface UpdateQuantityProps {
   productQuantity: number;
   quantity: number;
   setQuantity: (quatity: number) => void;
+  cartDetailID?: number;
 }
 
 const UpdateQuantity: React.FC<UpdateQuantityProps> = ({
   quantity,
   productQuantity,
   setQuantity,
+  cartDetailID,
 }) => {
   const { showToast } = useContext(ToastContext);
 
@@ -18,11 +21,17 @@ const UpdateQuantity: React.FC<UpdateQuantityProps> = ({
     if (quantity >= productQuantity)
       return showToast("Số lượng sản phẩm không đủ");
     setQuantity(quantity + 1);
+
+    if (cartDetailID) {
+      updateCarts(cartDetailID, quantity + 1);
+    }
   };
 
   const decreaseQuantity = () => {
-    if (quantity - 1 > 0) setQuantity(quantity - 1);
-    else showToast("Số lượng phải lớn hơn 0");
+    if (quantity - 1 > 0) {
+      setQuantity(quantity - 1);
+      cartDetailID && updateCarts(cartDetailID, quantity - 1);
+    } else showToast("Số lượng phải lớn hơn 0");
   };
 
   return (

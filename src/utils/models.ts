@@ -29,3 +29,23 @@ export type Image = {
   id: number;
   url: string;
 };
+export type CartDetailType = {
+  id: number;
+  product: ProductType;
+  phoneCategory: PhoneCategoryType;
+  customer: CustomerType;
+  quantity: number;
+  status: number;
+};
+export type CustomerType = {
+  id: number;
+  email: string;
+  password: string;
+  phone: string;
+  point: number;
+  role: number;
+  status: number;
+  username: string;
+  email_code: string;
+  email_code_time: string;
+};

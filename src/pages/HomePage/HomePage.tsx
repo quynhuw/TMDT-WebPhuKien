@@ -7,11 +7,14 @@ import { IoIosArrowForward } from "react-icons/io";
 import { IoIosArrowBack } from "react-icons/io";
 import clsx from "clsx";
 import { getAllProduct } from "@/api/Product";
+import { ProductType } from "@/utils/models";
+import ProductCard from "@/components/ProductCard/ProductCard";
 
 const HomePage = () => {
   const banners = [banner1, banner2, banner3];
   const [bannerActive, setBannerActive] = useState<number>(0);
   const [toggle, setToggle] = useState<boolean>(false);
+  const [products, setProducts] = useState<ProductType[]>([]);
   const classes = clsx("absolute max-w-full");
   useEffect(() => {
     if (banners.length > 0) {
@@ -22,7 +25,9 @@ const HomePage = () => {
   useEffect(() => {
     const getData = async () => {
       const res = await getAllProduct();
-      console.log(res);
+      console.log(res.data);
+
+      setProducts(res.data);
     };
     getData();
   }, []);
@@ -79,14 +84,9 @@ const HomePage = () => {
       <section className="flex flex-col items-center mx-auto mt-16 max-w-7xl gap-7">
         <div className="text-3xl font-black">Sản phẩm mới</div>
         <div className="grid my-6 xl:grid-cols-4 gap-14 md:grid-cols-2 sm:grid-cols-2 ">
-          <div className="w-[285px] h-[350px] bg-slate-500"></div>
-          <div className="w-[285px] h-[350px] bg-slate-500"></div>
-          <div className="w-[285px] h-[350px] bg-slate-500"></div>
-          <div className="w-[285px] h-[350px] bg-slate-500"></div>
-          <div className="w-[285px] h-[350px] bg-slate-500"></div>
-          <div className="w-[285px] h-[350px] bg-slate-500"></div>
-          <div className="w-[285px] h-[350px] bg-slate-500"></div>
-          <div className="w-[285px] h-[350px] bg-slate-500"></div>
+          {products.map((product) => {
+            return <ProductCard product={product} key={product.id} />;
+          })}
         </div>
 
         <button className="focus:outline-none text-white bg-primary hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-base px-7 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-300">
@@ -97,14 +97,9 @@ const HomePage = () => {
       <section className="flex flex-col items-center mx-auto mt-16 max-w-7xl gap-7">
         <div className="text-3xl font-black">Sản phẩm bán chạy</div>
         <div className="grid my-6 xl:grid-cols-4 gap-14 md:grid-cols-2 sm:grid-cols-2 ">
-          <div className="w-[285px] h-[350px] bg-slate-500"></div>
-          <div className="w-[285px] h-[350px] bg-slate-500"></div>
-          <div className="w-[285px] h-[350px] bg-slate-500"></div>
-          <div className="w-[285px] h-[350px] bg-slate-500"></div>
-          <div className="w-[285px] h-[350px] bg-slate-500"></div>
-          <div className="w-[285px] h-[350px] bg-slate-500"></div>
-          <div className="w-[285px] h-[350px] bg-slate-500"></div>
-          <div className="w-[285px] h-[350px] bg-slate-500"></div>
+          {products.map((product) => {
+            return <ProductCard product={product} key={product.id} />;
+          })}
         </div>
 
         <button className="focus:outline-none text-white bg-primary hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-base px-7 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-300">
