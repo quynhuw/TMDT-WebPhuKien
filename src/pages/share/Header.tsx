@@ -1,17 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/image-common/logo.png";
-import { FaSearch } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
 import { getUserFromSession } from "@/utils/User";
 import { useContext, useEffect, useState } from "react";
 import { ToastContext } from "@/hooks/ToastMessage/ToastContext";
 import { getCartsByCustomerId } from "../Cart/api";
 import SearchBar from "./Search";
+import { LoginContext } from "@/hooks/LoginStatus/LoginContext";
 
 const Header = () => {
+  const { user, setUser, handleLogout } = useContext(LoginContext);
   const navigate = useNavigate();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [user, setUser] = useState<any>();
   const [cartQuantity, setCartQuantity] = useState<number>(0);
   const toast = useContext(ToastContext);
   const url = window.location.href;
@@ -19,6 +19,11 @@ const Header = () => {
   function navigateTo(link: string) {
     navigate(link);
   }
+
+  const logout = () => {
+    handleLogout();
+    navigate("/");
+  };
 
   const checkLogged = () => {
     const userSession = getUserFromSession();
@@ -34,11 +39,6 @@ const Header = () => {
     else setCartQuantity(0);
   };
 
-  const handleLogout = () => {
-    sessionStorage.removeItem("user");
-    navigateTo("/");
-    setUser(null);
-  };
   const goToCartPage = () => {
     if (user) {
       navigateTo("/cart");
@@ -82,14 +82,14 @@ const Header = () => {
           <div className="flex items-center gap-x-10">
             <div className="flex flex-col font-bold justify-evenly">
               <div
-                onClick={() => navigateTo("/user")}
+                onClick={() => navigateTo("/account")}
                 className="transition-all cursor-pointer hover:text-primary"
               >
                 {user?.username}
               </div>
               {user ? (
                 <div
-                  onClick={handleLogout}
+                  onClick={logout}
                   className="transition-all cursor-pointer hover:text-primary"
                 >
                   Thoát

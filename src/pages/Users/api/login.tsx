@@ -9,7 +9,6 @@ export const login = async (email: string, password: string) => {
         password: password,
       }
     );
-    console.log(response.data);
     if (response.data.status == "ok") {
       const user = response.data.data;
       sessionStorage.setItem("user", JSON.stringify(user));
