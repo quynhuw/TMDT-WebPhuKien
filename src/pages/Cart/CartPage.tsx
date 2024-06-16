@@ -1,7 +1,7 @@
-import product1 from "../../assets/image-common/product-1.jpeg";
 import { useNavigate } from "react-router-dom";
-import { IoAddCircleOutline } from "react-icons/io5";
-import { IoRemoveCircleOutline } from "react-icons/io5";
+import CartRow from "./Components/CartRow";
+import ProductCard from "@/components/ProductCard/ProductCard";
+
 const CartPage = () => {
   const navigate = useNavigate();
 
@@ -10,8 +10,8 @@ const CartPage = () => {
   }
   return (
     <div>
-      <section className="mx-auto mt-10 max-w-7xl">
-        <table className="w-full table-fixed ">
+      <section className="mx-auto mt-10 overflow-auto max-w-7xl">
+        <table className="w-full table-fixed min-w-[1200px]">
           <thead>
             <tr className="border-2 border-solid ">
               <th className="py-2 font-extrabold ">Sản phẩm</th>
@@ -23,96 +23,9 @@ const CartPage = () => {
             </tr>
           </thead>
           <tbody>
-            <tr className="mt-4 border-2 border-solid">
-              <td className="py-4">
-                <img
-                  className="w-24 mx-auto rounded-md"
-                  src={product1}
-                  alt=""
-                />
-              </td>
-              <td className="py-4 text-base text-center ">
-                <div className="cursor-pointer hover:text-primary">
-                  Strap đa năng Capybara flying sweat - Mix
-                </div>
-              </td>
-              <td className="py-4 text-base font-bold text-center">
-                <div>50.000đ</div>
-              </td>
-              <td className="py-4 text-base text-center">
-                <div className="flex items-center justify-center gap-5">
-                  <IoAddCircleOutline className="text-3xl cursor-pointer" />
-                  <div className="font-bold">5</div>
-                  <IoRemoveCircleOutline className="text-3xl cursor-pointer" />
-                </div>
-              </td>
-              <td className="py-4 text-base font-bold text-center">
-                <div>250.000đ</div>
-              </td>
-              <td className="py-4 text-xl font-black text-center cursor-pointer">
-                <div className="hover:text-primary">Xóa</div>
-              </td>
-            </tr>
-            <tr className="mt-4 border-2 border-solid">
-              <td className="py-4">
-                <img
-                  className="w-24 mx-auto rounded-md"
-                  src={product1}
-                  alt=""
-                />
-              </td>
-              <td className="py-4 text-base text-center ">
-                <div className="cursor-pointer hover:text-primary">
-                  Strap đa năng Capybara flying sweat - Mix
-                </div>
-              </td>
-              <td className="py-4 text-base font-bold text-center">
-                <div>50.000đ</div>
-              </td>
-              <td className="py-4 text-base text-center">
-                <div className="flex items-center justify-center gap-5">
-                  <IoAddCircleOutline className="text-3xl cursor-pointer" />
-                  <div className="font-bold">5</div>
-                  <IoRemoveCircleOutline className="text-3xl cursor-pointer" />
-                </div>
-              </td>
-              <td className="py-4 text-base font-bold text-center">
-                <div>250.000đ</div>
-              </td>
-              <td className="py-4 text-xl font-black text-center cursor-pointer">
-                <div className="hover:text-primary">Xóa</div>
-              </td>
-            </tr>
-            <tr className="mt-4 border-2 border-solid">
-              <td className="py-4">
-                <img
-                  className="w-24 mx-auto rounded-md"
-                  src={product1}
-                  alt=""
-                />
-              </td>
-              <td className="py-4 text-base text-center ">
-                <div className="cursor-pointer hover:text-primary">
-                  Strap đa năng Capybara flying sweat - Mix
-                </div>
-              </td>
-              <td className="py-4 text-base font-bold text-center">
-                <div>50.000đ</div>
-              </td>
-              <td className="py-4 text-base text-center">
-                <div className="flex items-center justify-center gap-5">
-                  <IoAddCircleOutline className="text-3xl cursor-pointer" />
-                  <div className="font-bold">5</div>
-                  <IoRemoveCircleOutline className="text-3xl cursor-pointer" />
-                </div>
-              </td>
-              <td className="py-4 text-base font-bold text-center">
-                <div>250.000đ</div>
-              </td>
-              <td className="py-4 text-xl font-black text-center cursor-pointer">
-                <div className="hover:text-primary">Xóa</div>
-              </td>
-            </tr>
+            {[11, 1, 1, 1].map((item, index) => (
+              <CartRow />
+            ))}
           </tbody>
         </table>
       </section>
@@ -146,15 +59,13 @@ const CartPage = () => {
       </section>
       <section className="flex flex-col items-center mx-auto mt-16 max-w-7xl gap-7">
         <div className="text-3xl font-black">Các sản phẩm đã xem</div>
-        <div className="grid my-6 xl:grid-cols-4 gap-14 md:grid-cols-2 sm:grid-cols-2 ">
-          <div className="w-[285px] h-[350px] bg-slate-500"></div>
-          <div className="w-[285px] h-[350px] bg-slate-500"></div>
-          <div className="w-[285px] h-[350px] bg-slate-500"></div>
-          <div className="w-[285px] h-[350px] bg-slate-500"></div>
-          <div className="w-[285px] h-[350px] bg-slate-500"></div>
-          <div className="w-[285px] h-[350px] bg-slate-500"></div>
-          <div className="w-[285px] h-[350px] bg-slate-500"></div>
-          <div className="w-[285px] h-[350px] bg-slate-500"></div>
+        <div className="grid gap-12 my-6 xl:grid-cols-5 md:grid-cols-2 sm:grid-cols-2 ">
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
         </div>
       </section>
     </div>
