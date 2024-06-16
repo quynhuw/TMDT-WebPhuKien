@@ -1,10 +1,22 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { sendNewPassWord } from "./api/sendNewPassword";
+import { ToastContext } from "@/hooks/ToastMessage/ToastContext";
+import { Button } from "@chakra-ui/react";
 
 const ForgotPassPage = () => {
   const [isValidForgotPass, setIsValidForgotPass] = useState(false);
   const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { showToast } = useContext(ToastContext);
+
+  const handleSendNewPassword = async () => {
+    setIsLoading(true);
+    const res = await sendNewPassWord(email);
+    showToast(res);
+    setIsLoading(false);
+  };
 
   useEffect(() => {
     if (email != "") setIsValidForgotPass(true);
@@ -33,16 +45,18 @@ const ForgotPassPage = () => {
           }}
           className="border border-line rounded p-2"
           type="text"
-          placeholder="Email hoặc số điện thoại (*)"
+          placeholder="Nhập email đăng nhập của bạn (*)"
         />
-        <button
+        <Button
+          isLoading={isLoading}
+          onClick={handleSendNewPassword}
           disabled={!isValidForgotPass}
           className={`p-2 bg-primary rounded hover:brightness-110 text-white ${
             !isValidForgotPass && "!bg-gray-400"
           }`}
         >
           Gửi
-        </button>
+        </Button>
       </div>
     </div>
   );
