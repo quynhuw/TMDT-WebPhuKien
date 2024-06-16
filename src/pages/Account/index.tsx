@@ -1,12 +1,26 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import UserProfile from "./UserProfile";
 import OrdersHistory from "./OrdersHistory";
 import ChangePassword from "./ChangePassword";
+import { LoginContext } from "@/hooks/LoginStatus/LoginContext";
+import { useNavigate } from "react-router-dom";
+import Address from "./Address";
 
 const AccountPage = () => {
   const [activeTab, setActiveTab] = useState(0);
-  console.log(activeTab);
+  const { handleLogout } = useContext(LoginContext);
+  const navigator = useNavigate();
 
+  const logout = () => {
+    handleLogout();
+    navigator("/");
+  };
+
+  useEffect(() => {
+    if (!sessionStorage.getItem("user")) {
+      navigator("/user");
+    }
+  }, []);
   return (
     <div className="flex flex-col gap-2 py-5 mx-auto max-w-7xl">
       <div className="text-center text-[35px]">Tài khoản của tôi</div>
@@ -37,19 +51,27 @@ const AccountPage = () => {
             >
               Đổi mật khẩu
             </div>
-            <div className="cursor-pointer w-fit hover:text-primary hover:text-opacity-50">
+            <div
+              onClick={() => setActiveTab(3)}
+              className={`  cursor-pointer w-fit hover:text-primary hover:text-opacity-50 ${
+                activeTab === 1 ? "text-primary font-semibold" : "text-black "
+              }`}
+            >
+              Địa chỉ
+            </div>
+            <div
+              onClick={logout}
+              className="cursor-pointer w-fit hover:text-primary hover:text-opacity-50"
+            >
               Đăng xuất
             </div>
           </div>
         </div>
         <div className="w-3/4">
-          {activeTab === 0 ? (
-            <UserProfile />
-          ) : activeTab === 1 ? (
-            <OrdersHistory />
-          ) : (
-            <ChangePassword />
-          )}
+          {activeTab == 0 && <UserProfile />}
+          {activeTab == 1 && <OrdersHistory />}
+          {activeTab == 2 && <ChangePassword />}
+          {activeTab == 3 && <Address />}
         </div>
       </div>
     </div>

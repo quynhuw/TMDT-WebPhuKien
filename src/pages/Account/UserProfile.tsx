@@ -61,7 +61,7 @@ const UserProfile = () => {
             className="w-1/2 col-span-7 px-3 py-1 border border-gray-300 rounded outline-primary "
           />
         </div>
-        <div className="grid items-center w-full grid-cols-8 select-none">
+        {/* <div className="grid items-center w-full grid-cols-8 select-none">
           <div className="col-span-1">Email</div>
           <input
             type="email"
@@ -69,7 +69,7 @@ const UserProfile = () => {
             onChange={(e) => setEmail(e.target.value)}
             className="w-1/2 col-span-7 px-3 py-1 border border-gray-300 rounded outline-primary "
           />
-        </div>
+        </div> */}
         <button
           onClick={() => handleSubmit()}
           className="px-4 py-2 m-2 rounded select-none bg-primary hover:bg-opacity-80 w-fit"

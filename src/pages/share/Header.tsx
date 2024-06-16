@@ -3,30 +3,30 @@ import logo from "../../assets/image-common/logo.png";
 import { FaSearch } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
 import { getUserFromSession } from "@/utils/User";
-import { useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
+import { LoginContext } from "@/hooks/LoginStatus/LoginContext";
 
 const Header = () => {
+  const { user, setUser, handleLogout } = useContext(LoginContext);
   const navigate = useNavigate();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [user, setUser] = useState<any>();
 
   function navigateTo(link: string) {
     navigate(link);
   }
+
+  const logout = () => {
+    handleLogout();
+    navigate("/");
+  };
 
   const checkLogged = () => {
     const userSession = getUserFromSession();
     setUser(() => (userSession ? userSession : null));
   };
 
-  const handleLogout = () => {
-    sessionStorage.removeItem("user");
-    setUser(null);
-  };
-
   useEffect(() => {
     checkLogged();
-  });
+  }, []);
 
   return (
     <div>
@@ -54,14 +54,14 @@ const Header = () => {
           <div className="flex items-center gap-x-10">
             <div className="flex flex-col font-bold justify-evenly">
               <div
-                onClick={() => navigateTo("/user")}
+                onClick={() => navigateTo("/account")}
                 className="transition-all cursor-pointer hover:text-primary"
               >
                 {user?.username}
               </div>
               {user ? (
                 <div
-                  onClick={handleLogout}
+                  onClick={logout}
                   className="transition-all cursor-pointer hover:text-primary"
                 >
                   Thoát
