@@ -25,6 +25,7 @@ const ForgotPassPage = () => {
   return (
     <div className="my-4 w-[600px] max-w-[90%] border border-line mx-auto rounded">
       <div className="relative">
+        <div></div>
         <p
           onClick={() => {
             navigate("/user");
