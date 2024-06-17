@@ -1,4 +1,9 @@
-import { CommonStatus, ProductStatus } from "./enum";
+import {
+  CommonStatus,
+  PaymentStatus,
+  ProductStatus,
+  ShippingStatus,
+} from "./enum";
 
 export type ProductType = {
   id: number;
@@ -48,4 +53,27 @@ export type CustomerType = {
   username: string;
   email_code: string;
   email_code_time: string;
+};
+export type OrderType = {
+  id: number;
+  address: string;
+  createDate: string;
+  delivery_id: string;
+  discount: number;
+  paymentDate: string;
+  paymentStatus: PaymentStatus;
+  status: ShippingStatus;
+  total: number;
+  note: string;
+  customer: CustomerType;
+  orderDetails: OrderDetailType[];
+};
+export type OrderDetailType = {
+  id: number;
+  price: number;
+  quantity: number;
+  status: number;
+  order: OrderType;
+  product: ProductType;
+  phoneCategory: PhoneCategoryType;
 };

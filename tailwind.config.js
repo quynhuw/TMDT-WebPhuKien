@@ -7,6 +7,7 @@ export default {
     extend: {
       colors: {
         primary: "#b57edc",
+        stroke: "#262626",
       },
       boxShadow: {
         form: "0px 4px 18px 0px #4B465C1A",
@@ -16,8 +17,5 @@ export default {
       },
     },
   },
-  plugins: [
-    require("tailwindcss-animate"),
-  ],
-}
-
+  plugins: [require("tailwindcss-animate")],
+};
