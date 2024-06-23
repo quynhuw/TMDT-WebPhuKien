@@ -7,17 +7,19 @@ import ProductDetailPage from "../pages/ProductDetail/ProductDetailPage";
 import ProductsPage from "../pages/ProductsPage/ProductsPage";
 import LoginRegister from "../pages/Users";
 import ForgotPassPage from "../pages/Users/FogotPassPage";
+import SearchPage from "@/pages/SearchPage";
 
 const pathName = {
   homepage: "/",
   user: "/user",
   forgot_pass: "/forgot_pass",
   account: "/account",
-  product_detail: "/product_detail",
+  product_detail: "/product_detail/:id",
   products: "/products",
   cart: "/cart",
   payment: "/payment",
-  admin: "admin_dashboard",
+  admin: "/admin_dashboard",
+  search: "/search",
 };
 
 const routes = [
@@ -30,6 +32,7 @@ const routes = [
   { path: pathName.cart, element: CartPage },
   { path: pathName.payment, element: PaymentPage },
   { path: pathName.admin, element: AdminDashboard },
+  { path: pathName.search, element: SearchPage },
 ];
 
 export default routes;
