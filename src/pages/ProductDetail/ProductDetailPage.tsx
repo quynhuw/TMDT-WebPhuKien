@@ -1,7 +1,6 @@
 import { useParams } from "react-router-dom";
 import { detailProduct } from "./api/detailProduct";
 import InfoProduct from "./components/InfoProduct";
-import ViewedProduct from "./components/ViewedProducts";
 import { useEffect, useState } from "react";
 import { ProductType } from "@/utils/models";
 
@@ -15,6 +14,7 @@ const ProductDetailPage = () => {
     response.then((res) => {
       if (res.success) {
         setProduct(() => res.product);
+        console.log(res.product);
       }
     });
   };

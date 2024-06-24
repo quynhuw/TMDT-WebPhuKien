@@ -10,6 +10,7 @@ export const getCartsByCustomerId = async (id: number) => {
     } else {
       return { success: false, message: "Cannot get cart of this user" };
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     return { success: false, message: error.message };
   }
@@ -32,6 +33,7 @@ export const updateCarts = async (id: number, quantity: number) => {
     } else {
       return { success: false, message: "Cannot update this cart" };
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     return { success: false, message: error.message };
   }
@@ -46,11 +48,13 @@ export const deleteCartDetail = async (id: number) => {
     } else {
       return { success: false, message: "Cannot delete this cart" };
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     return { success: false, message: error.message };
   }
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const insertNewCartDetail = async (cartDetail: any) => {
   try {
     const response = await axios.post(
@@ -62,6 +66,7 @@ export const insertNewCartDetail = async (cartDetail: any) => {
     } else {
       return { success: false, message: "Cannot insert" };
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     return { success: false, message: error.message };
   }

@@ -1,13 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import CartRow from "./Components/CartRow";
-import ProductCard from "@/components/ProductCard/ProductCard";
-import { useContext, useEffect, useReducer, useState } from "react";
-import { getCarts, getCartsByCustomerId } from "./api";
+import { useContext, useEffect, useState } from "react";
+import { getCartsByCustomerId } from "./api";
 import { CartDetailType } from "@/utils/models";
 import { getUserFromSession } from "@/utils/User";
 import { ToastContext } from "@/hooks/ToastMessage/ToastContext";
 import { formatPrice } from "@/utils";
-import { initState, reducer } from "./store";
 
 const CartPage = () => {
   const navigate = useNavigate();
@@ -39,6 +37,7 @@ const CartPage = () => {
             <tr className="border-2 border-solid ">
               <th className="py-2 font-extrabold ">Sản phẩm</th>
               <th className="py-2 font-extrabold">Mô tả</th>
+              <th className="py-2 font-extrabold">Phân loại</th>
               <th className="py-2 font-extrabold">Giá</th>
               <th className="py-2 font-extrabold">Số lượng</th>
               <th className="py-2 font-extrabold">Tổng</th>

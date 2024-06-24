@@ -34,8 +34,7 @@ const Header = () => {
   const getCartQuantity = () => {
     if (user)
       getCartsByCustomerId(user.id).then((res) => {
-        // setCartQuantity(res.data);
-        console.log(res);
+        setCartQuantity(res.data.length);
       });
     else setCartQuantity(0);
   };
@@ -53,7 +52,7 @@ const Header = () => {
   }, [url]);
   useEffect(() => {
     getCartQuantity();
-  }, [user]);
+  }, [user, url]);
 
   return (
     <div>

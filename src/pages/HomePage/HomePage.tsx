@@ -15,7 +15,7 @@ const HomePage = () => {
   const navigate = useNavigate();
   const banners = [banner1, banner2, banner3];
   const [bannerActive, setBannerActive] = useState<number>(0);
-  const [toggle, setToggle] = useState<boolean>(false);
+  const toggle = useState<boolean>(false);
   const [latestProducts, setLatestProducts] = useState<ProductType[]>([]);
   const [bestSaleProducts, setBestSaleProducts] = useState<ProductType[]>([]);
 
