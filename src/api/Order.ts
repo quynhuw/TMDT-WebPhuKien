@@ -96,3 +96,20 @@ export const cancel = async (orderId: number) => {
     return { success: false, message: error.message };
   }
 };
+export const update = async (orderId: number, status: number) => {
+  try {
+    const response = await axios.post(
+      `${
+        import.meta.env.VITE_API_END_POINT
+      }/orders/updateStatus?orderId=${orderId}&status=${status}`
+    );
+    if (response.data.status == "ok") {
+      return { success: true, data: response.data.data };
+    } else {
+      return { success: false, message: "Cannot get all years" };
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    return { success: false, message: error.message };
+  }
+};

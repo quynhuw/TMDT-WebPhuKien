@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { FaPen } from "react-icons/fa";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { OrderType } from "@/utils/models";
-import { getAllOrders } from "@/api/Order";
+import { getAllOrders, update } from "@/api/Order";
 import { IoMdClose } from "react-icons/io";
 
 import { formatPrice } from "@/utils";
@@ -10,6 +11,7 @@ import { FaHome } from "react-icons/fa";
 import ShippingStatusComp from "./components/ShippingStatus";
 import PaymentStatusComp from "./components/PaymentStatus";
 import { ShippingLabel, ShippingStatus } from "@/utils/enum";
+import { ToastContext } from "@/hooks/ToastMessage/ToastContext";
 
 interface PopupViewDetailProps {
   order: OrderType | undefined;
@@ -18,7 +20,30 @@ interface PopupViewDetailProps {
 
 const PopupViewDetail: React.FC<PopupViewDetailProps> = ({ order, hide }) => {
   const [orderStatus, setOrderStatus] = useState(order?.status);
-  const saveChangeOrder = (order: OrderType) => {};
+  const toast = useContext(ToastContext);
+  const change = async (orderId: number, s: number) => {
+    if (s === ShippingStatus.CANCELLED)
+      return toast.showToast("Đơn hàng đã được huỷ");
+    if (s === ShippingStatus.SUCCESS)
+      return toast.showToast("Đơn hàng đã được giao thành công");
+    if (s === ShippingStatus.FAIL)
+      return toast.showToast("Đơn hàng đã thất bại");
+    if (s === ShippingStatus.RETURNED)
+      return toast.showToast("Đơn hàng đã được trả lại");
+    if (s === ShippingStatus.DELIVERY)
+      return toast.showToast("Đơn hàng đang giao hàng, không thể huỷ");
+    if (s === ShippingStatus.DELAYED)
+      return toast.showToast("Đơn hàng đang chờ giao lại, không thể huỷ");
+
+    const response = await update(orderId, s);
+    if (response.success) {
+      hide();
+      toast.showToast("Cập nhật thành công");
+    }
+  };
+  const saveChangeOrder = (order: OrderType) => {
+    change(order.id, orderStatus || 0);
+  };
 
   return (
     <div className="fixed top-0 left-0 grid w-full h-full duration-500 bg-black place-items-center bg-opacity-60">
@@ -147,7 +172,6 @@ const PopupViewDetail: React.FC<PopupViewDetailProps> = ({ order, hide }) => {
 
 const OrdersManagePage = () => {
   const [orders, setOrders] = useState<OrderType[]>([]);
-  const [selectedStatus, setSelectedStatus] = useState<ShippingStatus>();
   const [orderEditing, setOrderEditing] = useState<OrderType>();
 
   const [viewDetail, setViewDetail] = useState(false);
@@ -157,9 +181,7 @@ const OrdersManagePage = () => {
       response.success && setOrders(response.orders);
     });
   }, []);
-  const handleSelectChange = (e) => {
-    setSelectedStatus(e.target.value);
-  };
+
   const handleViewDetail = (order: OrderType) => {
     setViewDetail(true);
     setOrderEditing(order);
