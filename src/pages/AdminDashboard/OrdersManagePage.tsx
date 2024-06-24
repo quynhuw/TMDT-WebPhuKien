@@ -20,7 +20,6 @@ interface PopupViewDetailProps {
 
 const PopupViewDetail: React.FC<PopupViewDetailProps> = ({ order, hide }) => {
   const [orderStatus, setOrderStatus] = useState(order?.status);
-<<<<<<< master
   const toast = useContext(ToastContext);
   const change = async (orderId: number, s: number) => {
     if (s === ShippingStatus.CANCELLED)
@@ -44,11 +43,6 @@ const PopupViewDetail: React.FC<PopupViewDetailProps> = ({ order, hide }) => {
   };
   const saveChangeOrder = (order: OrderType) => {
     change(order.id, orderStatus || 0);
-=======
-
-  const saveChangeOrder = (order: OrderType) => {
-    console.log(order);
->>>>>>> gbao
   };
 
   return (
@@ -187,10 +181,6 @@ const OrdersManagePage = () => {
       response.success && setOrders(response.orders);
     });
   }, []);
-<<<<<<< master
-
-=======
->>>>>>> gbao
   const handleViewDetail = (order: OrderType) => {
     setViewDetail(true);
     setOrderEditing(order);
