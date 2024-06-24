@@ -22,7 +22,7 @@ const AccountPage = () => {
     }
   }, []);
   return (
-    <div className="flex flex-col gap-2 py-5 mx-auto max-w-7xl">
+    <div className="flex flex-col w-full gap-2 py-5 mx-auto max-w-7xl">
       <div className="text-center text-[35px]">Tài khoản của tôi</div>
       <div className="flex gap-5">
         <div className="w-1/4 p-5 px-10 select-none">
