@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { sendNewPassWord } from "./api/sendNewPassword";
 import { ToastContext } from "@/hooks/ToastMessage/ToastContext";
 import { Button } from "@chakra-ui/react";
+import { resetPassword } from "./api/resetPassword";
 
 const ForgotPassPage = () => {
   const [isValidForgotPass, setIsValidForgotPass] = useState(false);
@@ -10,12 +11,29 @@ const ForgotPassPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { showToast } = useContext(ToastContext);
+  const [phase, setPhase] = useState(1);
+  const [code, setCode] = useState("");
+  const [newPassword, setNewPassword] = useState("");
 
   const handleSendNewPassword = async () => {
     setIsLoading(true);
     const res = await sendNewPassWord(email);
-    showToast(res);
+    if (res.success) {
+      showToast("Mã OTP đã gửi đến mail của bạn");
+      setPhase(2);
+    } else {
+      showToast(res.message);
+    }
+
     setIsLoading(false);
+  };
+
+  const handleResetPassWord = async () => {
+    setIsLoading(true);
+    const res = await resetPassword(email, code, newPassword);
+    showToast(res.message);
+    setIsLoading(false);
+    navigate("/user");
   };
 
   useEffect(() => {
@@ -38,25 +56,63 @@ const ForgotPassPage = () => {
         </p>
       </div>
       <div className="flex flex-col gap-y-3 p-3">
-        <input
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-          }}
-          className="border border-line rounded p-2"
-          type="text"
-          placeholder="Nhập email đăng nhập của bạn (*)"
-        />
-        <Button
-          isLoading={isLoading}
-          onClick={handleSendNewPassword}
-          disabled={!isValidForgotPass}
-          className={`p-2 bg-primary rounded hover:brightness-110 text-white ${
-            !isValidForgotPass && "!bg-gray-400"
-          }`}
-        >
-          Gửi
-        </Button>
+        {phase == 1 && (
+          <>
+            <input
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+              className="border border-line rounded p-2"
+              type="text"
+              placeholder="Nhập email đăng nhập của bạn (*)"
+            />
+            <Button
+              isLoading={isLoading}
+              onClick={handleSendNewPassword}
+              disabled={!isValidForgotPass}
+              className={`p-2 bg-primary rounded hover:brightness-110 text-white ${
+                !isValidForgotPass && "!bg-gray-400"
+              }`}
+            >
+              Gửi
+            </Button>
+          </>
+        )}
+        {phase == 2 && (
+          <>
+            <div className="flex flex-col gap-y-2">
+              <input
+                value={code}
+                onChange={(e) => {
+                  setCode(e.target.value);
+                }}
+                className="border border-line rounded p-2"
+                type="text"
+                placeholder="OTP (*)"
+              />
+              <input
+                value={newPassword}
+                onChange={(e) => {
+                  setNewPassword(e.target.value);
+                }}
+                className="border border-line rounded p-2"
+                type="password"
+                placeholder="Nhập mật khẩu mới (*)"
+              />
+            </div>
+            <Button
+              isLoading={isLoading}
+              onClick={handleResetPassWord}
+              disabled={!isValidForgotPass}
+              className={`p-2 bg-primary rounded hover:brightness-110 text-white ${
+                !isValidForgotPass && "!bg-gray-400"
+              }`}
+            >
+              Gửi
+            </Button>
+          </>
+        )}
       </div>
     </div>
   );
