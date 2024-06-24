@@ -37,7 +37,7 @@ const Header = () => {
     if (user)
       getCartsByCustomerId(user.id).then((res) => {
         setCartQuantity(() => {
-          return res.data.reduce((total: number, item: CartDetailType) => {
+          return res?.data?.reduce((total: number, item: CartDetailType) => {
             return total + item.quantity;
           }, 0);
         });

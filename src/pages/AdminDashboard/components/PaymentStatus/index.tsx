@@ -1,7 +1,7 @@
 import { PaymentStatus } from "@/utils/enum";
 
 interface PaymentStatusProps {
-  status: PaymentStatus;
+  status?: PaymentStatus;
 }
 const PaymentStatusComp: React.FC<PaymentStatusProps> = (props) => {
   const { status } = props;

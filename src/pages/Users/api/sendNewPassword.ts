@@ -2,14 +2,14 @@ import axios from "axios"
 
 export const sendNewPassWord = async (email: string) => {
     try {
-        const url = `${import.meta.env.VITE_API_END_POINT}/customers/sendNewPasswordEmail?email=${email}`
+        const url = `${import.meta.env.VITE_API_END_POINT}/customers/sendVerificationEmail?email=${email}&name=""`;
         const res = await axios.get(url);
         if(res.status == 200) {
-            return "Send mail successfully";
+            return { success: true, message: "Ok", data: res.data };
         } else {
-            return "Email not found";
+            return { success: false, message: "Email not found" };
         }
     } catch (error) {
-     return "Email not found";
+     return { success: false, message: "Email not found" };
     }
 }
