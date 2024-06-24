@@ -13,7 +13,6 @@ import saveOrder from "./api/saveOrder";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@chakra-ui/react";
 import getLinkVNPay from "./api/getLinkVNPay";
-import { userInfo } from "os";
 
 const PaymentPage = () => {
   const [name, setName] = useState("");
@@ -265,7 +264,7 @@ const PaymentPage = () => {
           shippingFee: vnpResponseCode ? objShippingFee : shippingFee,
         };
         saveOrder(order)
-          .then((data) => {
+          .then(() => {
             user.point = vnpResponseCode
               ? user.point - point
               : user.point - pointAccepted;
@@ -273,11 +272,11 @@ const PaymentPage = () => {
             setLoadingPaying(false);
             navigate("/payment_success");
           })
-          .catch((error) => {
+          .catch(() => {
             setLoadingPaying(false);
           });
       })
-      .catch((error) => {
+      .catch(() => {
         setLoadingPaying(false);
       });
   };

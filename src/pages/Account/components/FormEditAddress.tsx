@@ -128,7 +128,7 @@ const FormEditAddress: React.FC<FormEditAddressProps> = ({
 
   useEffect(() => {
     if (listProvince) {
-      const province = document.getElementById("province");
+      const province = document.getElementById("province") as HTMLSelectElement;
       if (province) {
         const defaultProvince = provinceIdSelected;
         province.value = defaultProvince;
@@ -145,7 +145,7 @@ const FormEditAddress: React.FC<FormEditAddressProps> = ({
 
   useEffect(() => {
     if (listDistrict) {
-      const district = document.getElementById("district");
+      const district = document.getElementById("district") as HTMLSelectElement;
       if (district) {
         const defaultDistrict = districtIdSelected;
         district.value = defaultDistrict;
@@ -162,7 +162,7 @@ const FormEditAddress: React.FC<FormEditAddressProps> = ({
 
   useEffect(() => {
     if (listWard) {
-      const ward = document.getElementById("ward");
+      const ward = document.getElementById("ward") as HTMLSelectElement;
       if (ward) {
         const defaultWard = wardIdSelected;
         ward.value = defaultWard;

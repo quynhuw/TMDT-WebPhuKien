@@ -1,5 +1,5 @@
 // src/components/SearchBar.jsx
-import React, { useState } from "react";
+import { useState } from "react";
 import { IoSearch } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import { searchApi } from "./api";
@@ -11,7 +11,7 @@ const SearchBar = () => {
   const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: any) => {
     const query = e.target.value;
     setQuery(query);
     if (query.length > 1) {
