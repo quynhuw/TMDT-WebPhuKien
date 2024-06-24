@@ -27,7 +27,7 @@ const AdminDashboard = () => {
 
   return (
     <div className="flex w-full">
-      <div className="flex flex-col items-center w-1/6 h-screen gap-4 shadow-lg">
+      <div className="flex flex-col items-center w-[12%] h-screen gap-4 shadow-lg">
         <div
           className="border-b-2 border-gray-300 cursor-pointer"
           onClick={() => navigateTo("/")}
@@ -49,7 +49,7 @@ const AdminDashboard = () => {
           })}
         </div>
       </div>
-      <div className="flex flex-col items-center w-5/6 gap-2 m-2">
+      <div className="flex flex-col items-center w-[88%] gap-2 m-2">
         <div className="flex w-full items-center h-[60px] bg-primary bg-opacity-70 rounded shadow-lg gap-x-10">
           <div className="flex flex-col font-bold justify-evenly">
             <div

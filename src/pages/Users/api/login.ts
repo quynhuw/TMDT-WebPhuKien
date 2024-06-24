@@ -14,6 +14,8 @@ export const login = async (email: string, password: string) => {
       sessionStorage.setItem("user", JSON.stringify(user));
       return { success: true, user: user };
     } else {
+      console.log(response.data);
+      
       return { success: false, message: "Wrong username or password" };
     }
   } catch (error: any) {

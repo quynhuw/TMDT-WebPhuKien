@@ -1,14 +1,22 @@
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/image-common/logo.png";
-import { FaSearch } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
 import { getUserFromSession } from "@/utils/User";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
+import { ToastContext } from "@/hooks/ToastMessage/ToastContext";
+import { getCartsByCustomerId } from "../Cart/api";
+import SearchBar from "./Search";
 import { LoginContext } from "@/hooks/LoginStatus/LoginContext";
+import { CartDetailType } from "@/utils/models";
 
 const Header = () => {
-  const { user, setUser, handleLogout } = useContext(LoginContext);
+  const { user, setUser, handleLogout, cartQuantity, setCartQuantity } =
+    useContext(LoginContext);
   const navigate = useNavigate();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
+  const toast = useContext(ToastContext);
+  const url = window.location.href;
 
   function navigateTo(link: string) {
     navigate(link);
@@ -24,9 +32,32 @@ const Header = () => {
     setUser(() => (userSession ? userSession : null));
   };
 
+  const getCartQuantity = () => {
+    if (user)
+      getCartsByCustomerId(user.id).then((res) => {
+        setCartQuantity(() => {
+          return res.data.reduce((total: number, item: CartDetailType) => {
+            return total + item.quantity;
+          }, 0);
+        });
+      });
+    else setCartQuantity(0);
+  };
+
+  const goToCartPage = () => {
+    if (user) {
+      navigateTo("/cart");
+    } else {
+      toast.showToast("Vui lòng đăng nhập để xem giỏ hàng");
+    }
+  };
+
   useEffect(() => {
     checkLogged();
-  }, []);
+  }, [url]);
+  useEffect(() => {
+    getCartQuantity();
+  }, [user]);
 
   return (
     <div>
@@ -39,7 +70,7 @@ const Header = () => {
             <img className="h-full" src={logo} alt="" />
           </div>
 
-          <div className="flex overflow-hidden items-center w-[400px] h-9 border-2 border-primary rounded-lg">
+          {/* <div className="flex overflow-hidden items-center w-[400px] h-9 border-2 border-primary rounded-lg">
             <div className="flex-1 px-1 py-1 overflow-hidden rounded-md">
               <input
                 className="w-full px-2 focus:outline-none"
@@ -50,7 +81,9 @@ const Header = () => {
             <div className="bg-primary h-full aspect-[1.2] grid place-items-center text-[16px] text-white cursor-pointer hover:bg-purple-800 transition-all duration-700">
               <FaSearch />
             </div>
-          </div>
+          </div> */}
+          <SearchBar />
+
           <div className="flex items-center gap-x-10">
             <div className="flex flex-col font-bold justify-evenly">
               <div
@@ -76,11 +109,14 @@ const Header = () => {
               )}
             </div>
             <div
-              onClick={() => navigateTo("/cart")}
+              onClick={() => goToCartPage()}
               className="relative transition-all cursor-pointer hover:text-primary"
             >
-              <div className="absolute grid place-items-center left-full top-0 rounded-full h-5 aspect-square bg-red-500 text-white text-[13px] -translate-x-1/2 -translate-y-1/2">
-                1
+              <div
+                id="cart-quantity"
+                className="absolute grid place-items-center left-full top-0 rounded-full h-5 aspect-square bg-red-500 text-white text-[13px] -translate-x-1/2 -translate-y-1/2"
+              >
+                {cartQuantity}
               </div>
               <FaShoppingCart className="text-[30px] " />
             </div>

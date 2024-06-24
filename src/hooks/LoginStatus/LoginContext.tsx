@@ -11,12 +11,16 @@ interface LoginContextProps {
   user: any;
   setUser: Dispatch<SetStateAction<any>>;
   handleLogout: () => void;
+  setCartQuantity: Dispatch<SetStateAction<any>>;
+  cartQuantity: number;
 }
 
 export const LoginContext = createContext<LoginContextProps>({
   user: null,
   setUser: () => {},
   handleLogout: () => {},
+  setCartQuantity: () => {},
+  cartQuantity: 0,
 });
 
 interface LoginProviderProps {
@@ -25,6 +29,7 @@ interface LoginProviderProps {
 
 export const LoginProvider: React.FC<LoginProviderProps> = ({ children }) => {
   const [user, setUser] = useState<any>();
+  const [cartQuantity, setCartQuantity] = useState<number>(0);
 
   const handleLogout = () => {
     sessionStorage.removeItem("user");
@@ -35,6 +40,8 @@ export const LoginProvider: React.FC<LoginProviderProps> = ({ children }) => {
     user,
     setUser,
     handleLogout,
+    setCartQuantity,
+    cartQuantity,
   };
 
   return (
