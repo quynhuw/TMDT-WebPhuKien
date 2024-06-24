@@ -169,7 +169,7 @@ const OrdersManagePage = () => {
                     </div>
                     <div className="flex flex-col gap-2 p-2 bg-white rounded shadow-lg">
                       <strong>Sản phẩm</strong>
-                      {order.orderDetails.map((detail) => {
+                      {order?.orderDetails?.map((detail) => {
                         return (
                           <div key={detail.id} className="flex gap-10">
                             <img
@@ -179,7 +179,7 @@ const OrdersManagePage = () => {
                             />
                             <div className="flex flex-col max-w-[250px]">
                               <strong>{detail.product.name}</strong>
-                              <div>{detail.phoneCategory.name}</div>
+                              <div>{detail.phoneCategory?.name || ""}</div>
                             </div>
                             <div>SL: {detail.quantity}</div>
                             <div>{formatPrice(detail.price)}</div>
