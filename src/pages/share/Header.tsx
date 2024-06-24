@@ -2,11 +2,12 @@ import { useNavigate } from "react-router-dom";
 import logo from "../../assets/image-common/logo.png";
 import { FaShoppingCart } from "react-icons/fa";
 import { getUserFromSession } from "@/utils/User";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { ToastContext } from "@/hooks/ToastMessage/ToastContext";
 import { getCartsByCustomerId } from "../Cart/api";
 import SearchBar from "./Search";
 import { LoginContext } from "@/hooks/LoginStatus/LoginContext";
+import CategoryBar from "./CategoryBar";
 import { CartDetailType } from "@/utils/models";
 
 const Header = () => {
@@ -57,7 +58,7 @@ const Header = () => {
   }, [url]);
   useEffect(() => {
     getCartQuantity();
-  }, [user]);
+  }, [user, url]);
 
   return (
     <div>
@@ -123,28 +124,7 @@ const Header = () => {
           </div>
         </div>
       </div>
-      <div className="w-full p-4 bg-primary">
-        <div className="flex justify-between mx-auto font-bold text-gray-900 max-w-7xl">
-          <div className="transition-all cursor-pointer hover:text-black">
-            <p>Ốp điện thoại</p>
-          </div>
-          <div className="transition-all cursor-pointer hover:text-black">
-            <p>Tai nghe/Phụ kiện tai nghe</p>
-          </div>
-          <div className="transition-all cursor-pointer hover:text-black">
-            <p>Dây đeo điện thoại</p>
-          </div>
-          <div className="transition-all cursor-pointer hover:text-black">
-            <p>Mojipop/Móc cầm điện thoại</p>
-          </div>
-          <div className="transition-all cursor-pointer hover:text-black">
-            <p>Túi chống nước điện thoại</p>
-          </div>
-          <div className="transition-all cursor-pointer hover:text-black">
-            <p>Phụ kiện điện thoại khác</p>
-          </div>
-        </div>
-      </div>
+      <CategoryBar />
     </div>
   );
 };

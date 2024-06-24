@@ -17,8 +17,13 @@ export type ProductType = {
   images: Image[];
   category: CategoryType;
   status: ProductStatus;
-  phoneCategories: PhoneCategoryType[];
+  productPhoneCategories: ProductPhoneCategoriesType[];
 };
+export type ProductPhoneCategoriesType = {
+  product: ProductType;
+  phoneCategory: PhoneCategoryType;
+};
+
 export type PhoneCategoryType = {
   id: number;
   name: string;

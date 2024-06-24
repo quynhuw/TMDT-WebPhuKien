@@ -6,30 +6,24 @@ import "./css/banner.css";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoIosArrowBack } from "react-icons/io";
 import clsx from "clsx";
-import { getAllProduct } from "@/api/Product";
+import { sortProducts } from "@/api/Product";
 import { ProductType } from "@/utils/models";
 import ProductCard from "@/components/ProductCard/ProductCard";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
+  const navigate = useNavigate();
   const banners = [banner1, banner2, banner3];
   const [bannerActive, setBannerActive] = useState<number>(0);
-  const [toggle, setToggle] = useState<boolean>(false);
-  const [products, setProducts] = useState<ProductType[]>([]);
+  const toggle = useState<boolean>(false);
+  const [latestProducts, setLatestProducts] = useState<ProductType[]>([]);
+  const [bestSaleProducts, setBestSaleProducts] = useState<ProductType[]>([]);
+
   const classes = clsx("absolute max-w-full");
   useEffect(() => {
     if (banners.length > 0) {
       setBannerActive(0);
     }
-  }, []);
-
-  useEffect(() => {
-    const getData = async () => {
-      const res = await getAllProduct();
-      console.log(res.data);
-
-      setProducts(res.data);
-    };
-    getData();
   }, []);
 
   const handleChangeImage = (direction: number) => {
@@ -54,7 +48,21 @@ const HomePage = () => {
     const img = document.getElementById("img");
     img?.classList.add(direction === 1 ? "fade-to-right" : "fade-to-left");
   };
-
+  const getProducts = () => {
+    sortProducts("", 1, "4", "desc", "createAt").then((res) => {
+      if (res.status === "ok") {
+        setLatestProducts(res.data.products);
+      }
+    });
+    sortProducts("", 1, "4", "desc", "sold").then((res) => {
+      if (res.status === "ok") {
+        setBestSaleProducts(res.data.products);
+      }
+    });
+  };
+  useEffect(() => {
+    getProducts();
+  }, []);
   useEffect(() => {
     const bannerImg = document.getElementById("banner-img");
     bannerImg &&
@@ -81,28 +89,31 @@ const HomePage = () => {
           <IoIosArrowForward className="text-[50px]" />
         </div>
       </section>
-      <section className="flex flex-col items-center mx-auto mt-16 max-w-7xl gap-7">
+      <section className="flex flex-col items-center gap-2 mx-auto mt-16 max-w-7xl">
         <div className="text-3xl font-black">Sản phẩm mới</div>
         <div className="grid my-6 xl:grid-cols-4 gap-14 md:grid-cols-2 sm:grid-cols-2 ">
-          {products.map((product) => {
+          {latestProducts.map((product) => {
             return <ProductCard product={product} key={product.id} />;
           })}
         </div>
-
-        <button className="focus:outline-none text-white bg-primary hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-base px-7 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-300">
+        <button
+          onClick={() => navigate("/products")}
+          className="focus:outline-none text-white bg-primary hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-base px-7 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-300"
+        >
           Xem thêm
         </button>
       </section>
-
-      <section className="flex flex-col items-center mx-auto mt-16 max-w-7xl gap-7">
+      <section className="flex flex-col items-center gap-2 mx-auto mt-16 max-w-7xl">
         <div className="text-3xl font-black">Sản phẩm bán chạy</div>
         <div className="grid my-6 xl:grid-cols-4 gap-14 md:grid-cols-2 sm:grid-cols-2 ">
-          {products.map((product) => {
+          {bestSaleProducts.map((product) => {
             return <ProductCard product={product} key={product.id} />;
           })}
         </div>
-
-        <button className="focus:outline-none text-white bg-primary hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-base px-7 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-300">
+        <button
+          onClick={() => navigate("/products")}
+          className="focus:outline-none text-white bg-primary hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-base px-7 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-300"
+        >
           Xem thêm
         </button>
       </section>
