@@ -18,7 +18,10 @@ interface PopupViewDetailProps {
 
 const PopupViewDetail: React.FC<PopupViewDetailProps> = ({ order, hide }) => {
   const [orderStatus, setOrderStatus] = useState(order?.status);
-  const saveChangeOrder = (order: OrderType) => {};
+
+  const saveChangeOrder = (order: OrderType) => {
+    console.log(order);
+  };
 
   return (
     <div className="fixed top-0 left-0 grid w-full h-full duration-500 bg-black place-items-center bg-opacity-60">
@@ -147,7 +150,6 @@ const PopupViewDetail: React.FC<PopupViewDetailProps> = ({ order, hide }) => {
 
 const OrdersManagePage = () => {
   const [orders, setOrders] = useState<OrderType[]>([]);
-  const [selectedStatus, setSelectedStatus] = useState<ShippingStatus>();
   const [orderEditing, setOrderEditing] = useState<OrderType>();
 
   const [viewDetail, setViewDetail] = useState(false);
@@ -157,9 +159,6 @@ const OrdersManagePage = () => {
       response.success && setOrders(response.orders);
     });
   }, []);
-  const handleSelectChange = (e) => {
-    setSelectedStatus(e.target.value);
-  };
   const handleViewDetail = (order: OrderType) => {
     setViewDetail(true);
     setOrderEditing(order);

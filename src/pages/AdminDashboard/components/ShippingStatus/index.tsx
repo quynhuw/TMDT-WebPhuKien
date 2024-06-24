@@ -1,4 +1,3 @@
-import { OrderType } from "@/utils/models";
 import { ShippingLabel, ShippingStatus } from "@/utils/enum";
 
 interface ShippingStatusProps {

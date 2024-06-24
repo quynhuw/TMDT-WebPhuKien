@@ -1,6 +1,6 @@
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { FaPen } from "react-icons/fa";
-import { ChangeEvent, useContext, useEffect, useState } from "react";
+import { ChangeEvent, useContext, useState } from "react";
 import updateProduct from "../../api/updateProduct";
 import { ToastContext } from "@/hooks/ToastMessage/ToastContext";
 import addProduct from "../../api/addProduct";
@@ -108,7 +108,7 @@ const FormEdit: React.FC<FormEditProps> = ({ item, hide, updateList }) => {
   };
 
   const handleSubmit = async () => {
-    const res = await updateProduct(formData);
+    updateProduct(formData);
     updateList();
     showToast("Product editted successfully");
     hide();
