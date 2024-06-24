@@ -2,19 +2,33 @@ import UpdateQuantity from "../../../components/Quantity/UpdateQuantity";
 import { CartDetailType } from "@/utils/models";
 import { formatPrice } from "@/utils";
 import { useNavigate } from "react-router-dom";
-import { useContext, useState } from "react";
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { deleteCartDetail } from "../api";
 import { ToastContext } from "@/hooks/ToastMessage/ToastContext";
+import { CartPageContext } from "../CartPage";
+import { LoginContext } from "@/hooks/LoginStatus/LoginContext";
 
 interface CartRowProps {
   cartDetail: CartDetailType;
+  listItem: any[];
+  handleSelect: Dispatch<SetStateAction<any[]>>;
 }
 
 const CartRow: React.FC<CartRowProps> = (props) => {
-  const { cartDetail } = props;
+  const { cartDetail, handleSelect, listItem } = props;
   const [quantity, setQuantity] = useState<number>(cartDetail.quantity || 0);
   const toast = useContext(ToastContext);
   const navigate = useNavigate();
+  const { setTotal } = useContext(CartPageContext);
+  const [isChecked, setIsChecked] = useState(true);
+  const { setCartQuantity } = useContext(LoginContext);
 
   const handleDeleteRow = () => {
     deleteCartDetail(cartDetail.id).then(() => {
@@ -23,8 +37,61 @@ const CartRow: React.FC<CartRowProps> = (props) => {
     });
   };
 
+  const handleCheck = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) {
+      setIsChecked(true);
+      handleSelect(() => [...listItem, cartDetail]);
+    } else {
+      setIsChecked(false);
+      const list = listItem.filter((item) => {
+        return item.id !== cartDetail.id;
+      });
+      handleSelect(() => list);
+    }
+  };
+  const handleUpdate = () => {
+    const listTemp = listItem.filter((item: CartDetailType) => {
+      return item.id != cartDetail.id;
+    });
+    cartDetail.quantity = quantity;
+    for (let i = 0; i < listItem.length; i++) {
+      if (listItem[i].id == cartDetail.id) {
+        listItem[i].quantity = quantity;
+      }
+    }
+    listTemp.push(cartDetail);
+    setCartQuantity(() =>
+      listTemp.reduce((total: number, item: CartDetailType) => {
+        return total + item.quantity;
+      }, 0)
+    );
+    const totalPriceThisItem = quantity * cartDetail.product.price;
+    let total = 0;
+    for (let i = 0; i < listTemp.length; i++) {
+      if (listTemp[i].id != cartDetail.id) {
+        total += listTemp[i].product.price * listTemp[i].quantity;
+      }
+    }
+
+    if (isChecked) {
+      total += totalPriceThisItem;
+    }
+    setTotal(total);
+  };
+
+  useEffect(() => {
+    handleUpdate();
+  }, [quantity]);
+
   return (
     <tr className="mt-4 border-2 border-solid">
+      <td className="text-center">
+        <input
+          onChange={handleCheck}
+          defaultChecked={isChecked}
+          type="checkbox"
+        />
+      </td>
       <td className="py-4">
         <img
           onClick={() => navigate(`/product_detail/${cartDetail?.product?.id}`)}

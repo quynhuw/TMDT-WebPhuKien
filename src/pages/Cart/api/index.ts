@@ -71,3 +71,14 @@ export const insertNewCartDetail = async (cartDetail: any) => {
     return { success: false, message: error.message };
   }
 };
+
+export const getTotalPrice = async (data: any) => {
+  try {
+    const url = `${import.meta.env.VITE_API_END_POINT}/carts/getTotalPrice`
+    const res = await axios.post(url, data)
+    return { success: true, data: res.data };
+  } catch (error: any) {
+    console.log(error);
+    return { success: false, message: error.message };
+  }
+}
