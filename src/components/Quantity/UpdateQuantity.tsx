@@ -17,20 +17,20 @@ const UpdateQuantity: React.FC<UpdateQuantityProps> = ({
 }) => {
   const { showToast } = useContext(ToastContext);
 
-  const increaseQuantity = () => {
+  const increaseQuantity = async () => {
     if (quantity >= productQuantity)
       return showToast("Số lượng sản phẩm không đủ");
     setQuantity(quantity + 1);
 
     if (cartDetailID) {
-      updateCarts(cartDetailID, quantity + 1);
+      await updateCarts(cartDetailID, quantity + 1);
     }
   };
 
-  const decreaseQuantity = () => {
+  const decreaseQuantity = async () => {
     if (quantity - 1 > 0) {
       setQuantity(quantity - 1);
-      cartDetailID && updateCarts(cartDetailID, quantity - 1);
+      cartDetailID && (await updateCarts(cartDetailID, quantity - 1));
     } else showToast("Số lượng phải lớn hơn 0");
   };
 

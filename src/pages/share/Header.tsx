@@ -7,12 +7,14 @@ import { ToastContext } from "@/hooks/ToastMessage/ToastContext";
 import { getCartsByCustomerId } from "../Cart/api";
 import SearchBar from "./Search";
 import { LoginContext } from "@/hooks/LoginStatus/LoginContext";
+import { CartDetailType } from "@/utils/models";
 
 const Header = () => {
-  const { user, setUser, handleLogout } = useContext(LoginContext);
+  const { user, setUser, handleLogout, cartQuantity, setCartQuantity } =
+    useContext(LoginContext);
   const navigate = useNavigate();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [cartQuantity, setCartQuantity] = useState<number>(0);
+
   const toast = useContext(ToastContext);
   const url = window.location.href;
 
@@ -33,8 +35,11 @@ const Header = () => {
   const getCartQuantity = () => {
     if (user)
       getCartsByCustomerId(user.id).then((res) => {
-        // setCartQuantity(res.data);
-        console.log(res);
+        setCartQuantity(() => {
+          return res.data.reduce((total: number, item: CartDetailType) => {
+            return total + item.quantity;
+          }, 0);
+        });
       });
     else setCartQuantity(0);
   };

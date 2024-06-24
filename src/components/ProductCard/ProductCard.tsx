@@ -16,7 +16,7 @@ const ProductCard: React.FC<ProductCardProps> = (props) => {
         <div className="overflow-hidden rounded ">
           <img
             className="transition-all duration-500 group-hover/item:scale-110"
-            src={product.images[0].url}
+            src={product?.images[0]?.url}
             alt=""
           />
         </div>
