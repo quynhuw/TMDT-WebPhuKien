@@ -38,6 +38,7 @@ const AdminDashboard = () => {
           {tabs.map((tab) => {
             return (
               <div
+                key={tab}
                 onClick={() => handleClickTab(tab)}
                 className={`py-2 m-1 rounded cursor-pointer border-b-gray-300 duration-100 hover:bg-primary hover:bg-opacity-70
                     ${tab === tabActive ? "bg-primary " : ""}
