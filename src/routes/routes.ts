@@ -8,6 +8,7 @@ import ProductsPage from "../pages/ProductsPage/ProductsPage";
 import LoginRegister from "../pages/Users";
 import ForgotPassPage from "../pages/Users/FogotPassPage";
 import SearchPage from "@/pages/SearchPage";
+import PaymentSuccess from "@/pages/PaymentSuccess/PaymentSuccess";
 
 const pathName = {
   homepage: "/",
@@ -20,6 +21,7 @@ const pathName = {
   payment: "/payment",
   admin: "/admin_dashboard",
   search: "/search",
+  payment_success: "/payment_success",
 };
 
 const routes = [
@@ -33,6 +35,7 @@ const routes = [
   { path: pathName.payment, element: PaymentPage },
   { path: pathName.admin, element: AdminDashboard },
   { path: pathName.search, element: SearchPage },
+  { path: pathName.payment_success, element: PaymentSuccess },
 ];
 
 export default routes;

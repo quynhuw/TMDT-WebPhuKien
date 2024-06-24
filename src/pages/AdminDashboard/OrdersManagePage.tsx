@@ -11,9 +11,144 @@ import ShippingStatusComp from "./components/ShippingStatus";
 import PaymentStatusComp from "./components/PaymentStatus";
 import { ShippingLabel, ShippingStatus } from "@/utils/enum";
 
+interface PopupViewDetailProps {
+  order: OrderType | undefined;
+  hide: () => void;
+}
+
+const PopupViewDetail: React.FC<PopupViewDetailProps> = ({ order, hide }) => {
+  const [orderStatus, setOrderStatus] = useState(order?.status);
+  const saveChangeOrder = (order: OrderType) => {};
+
+  return (
+    <div className="fixed top-0 left-0 grid w-full h-full duration-500 bg-black place-items-center bg-opacity-60">
+      <div className="bg-gray-50 p-3 rounded max-w-[1024px] flex flex-col gap-3">
+        <div className="flex justify-between">
+          <div className="flex flex-col w-1/3 gap-1">
+            <div className="flex items-center gap-3">
+              <div className="flex gap-2 w-fit">
+                <div>Mã đơn hàng:</div> <div>#{order?.id}</div>
+              </div>
+              <PaymentStatusComp status={order?.paymentStatus} />
+            </div>
+            <div>Ngày đặt: {order?.createDate}</div>
+          </div>
+          <IoMdClose
+            className="text-stroke text-[35px] cursor-pointer hover:text-primary"
+            onClick={hide}
+          />
+        </div>
+        <div className="flex gap-2">
+          <div className="flex flex-col gap-1 p-2 bg-white rounded shadow-lg">
+            <strong>Thông tin người nhận</strong>
+            <div>#{order?.customer.id + " - " + order?.customer.username}</div>
+            <div className="flex gap-2">
+              <FaHome className="text-primary" />
+              <div> {order?.address}</div>{" "}
+            </div>
+          </div>
+          <div className="flex flex-col gap-1 p-2 max-w-[300px] bg-white rounded shadow-lg">
+            <strong>Ghi chú</strong>
+            <div>{order?.note}</div>
+          </div>
+          <div className="flex flex-col gap-1 p-2 min-w-[250px] bg-white rounded shadow-lg">
+            <strong>Tổng tiền</strong>
+            <div className="flex justify-between">
+              <div>Tạm tính:</div>
+              <div>
+                {formatPrice((order?.total || 0) + (order?.discount || 0))}
+              </div>
+            </div>
+            <div className="flex justify-between">
+              <div>Giảm giá:</div>
+              <div className="text-orange-400">
+                -{formatPrice(order?.discount || 0)}
+              </div>
+            </div>
+            <div className="flex justify-between">
+              <strong>Tổng tiền:</strong>
+              <strong className="text-red-500">
+                {formatPrice(order?.total || 0)}
+              </strong>
+            </div>
+          </div>
+        </div>
+        <div className="flex gap-4">
+          <strong>Thông tin vận chuyển</strong>
+          <select
+            value={orderStatus}
+            onChange={(e) => setOrderStatus(parseInt(e.target.value))}
+          >
+            <option value={ShippingStatus.PENDING}>
+              {ShippingLabel.PENDING}
+            </option>
+            <option value={ShippingStatus.PROCESSING}>
+              {ShippingLabel.PROCESSING}
+            </option>
+            <option value={ShippingStatus.CONFIRMED}>
+              {ShippingLabel.CONFIRMED}
+            </option>
+            <option value={ShippingStatus.RETURNED}>
+              {ShippingLabel.RETURNED}
+            </option>
+            <option value={ShippingStatus.CANCELLED}>
+              {ShippingLabel.CANCELLED}
+            </option>
+            <option value={ShippingStatus.DELAYED}>
+              {ShippingLabel.DELAYED}
+            </option>
+            <option value={ShippingStatus.DELIVERY}>
+              {ShippingLabel.DELIVERY}
+            </option>
+            <option value={ShippingStatus.FAIL}>{ShippingLabel.FAIL}</option>
+            <option value={ShippingStatus.SUCCESS}>
+              {ShippingLabel.SUCCESS}
+            </option>
+          </select>
+        </div>
+        <div className="flex flex-col gap-2 p-2 bg-white rounded shadow-lg">
+          <strong>Sản phẩm</strong>
+          {order?.orderDetails?.map((detail) => {
+            return (
+              <div key={detail.id} className="flex gap-10">
+                <img
+                  className="w-[92px] rounded h-[92px]"
+                  src={detail.product.images[0].url}
+                  alt=""
+                />
+                <div className="flex flex-col max-w-[250px]">
+                  <strong>{detail.product.name}</strong>
+                  <div>{detail.phoneCategory?.name || ""}</div>
+                </div>
+                <div>SL: {detail.quantity}</div>
+                <div>{formatPrice(detail.price)}</div>
+              </div>
+            );
+          })}
+        </div>
+        <div className="flex justify-end gap-2">
+          <button
+            onClick={hide}
+            className="px-5 py-2 bg-white rounded-2xl hover:bg-gray-200"
+          >
+            Huỷ
+          </button>
+          <button
+            onClick={() => order && saveChangeOrder(order)}
+            className="px-5 py-2 bg-primary rounded-2xl bg-opacity-90 hover:bg-opacity-100"
+          >
+            Cập nhật
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const OrdersManagePage = () => {
   const [orders, setOrders] = useState<OrderType[]>([]);
   const [selectedStatus, setSelectedStatus] = useState<ShippingStatus>();
+  const [orderEditing, setOrderEditing] = useState<OrderType>();
 
   const [viewDetail, setViewDetail] = useState(false);
   useEffect(() => {
@@ -27,12 +162,17 @@ const OrdersManagePage = () => {
   };
   const handleViewDetail = (order: OrderType) => {
     setViewDetail(true);
-    setSelectedStatus(order.status);
+    setOrderEditing(order);
   };
-  const saveChangeOrder = (order: OrderType) => {};
 
   return (
     <div className="flex flex-col w-full gap-2 p-1 rounded shadow-sm">
+      {viewDetail && (
+        <PopupViewDetail
+          order={orderEditing}
+          hide={() => setViewDetail(false)}
+        />
+      )}
       <div className="text-[25px]">{"Quản lý đơn hàng"}</div>
       <div className="flex items-center justify-end gap-2">
         <input
@@ -79,131 +219,6 @@ const OrdersManagePage = () => {
               key={order.id}
               className="grid items-center grid-cols-12 pb-2 border-b border-stroke text-stroke"
             >
-              {viewDetail && (
-                <div className="fixed top-0 left-0 grid w-full h-full duration-500 bg-black place-items-center bg-opacity-60">
-                  <div className="bg-gray-50 p-3 rounded max-w-[1024px] flex flex-col gap-3">
-                    <div className="flex justify-between">
-                      <div className="flex flex-col w-1/3 gap-1">
-                        <div className="flex items-center gap-3">
-                          <div className="flex gap-2 w-fit">
-                            <div>Mã đơn hàng:</div> <div>#{order.id}</div>
-                          </div>
-                          <PaymentStatusComp status={order.paymentStatus} />
-                        </div>
-                        <div>Ngày đặt: {order.createDate}</div>
-                      </div>
-                      <IoMdClose
-                        className="text-stroke text-[35px] cursor-pointer hover:text-primary"
-                        onClick={() => setViewDetail(false)}
-                      />
-                    </div>
-                    <div className="flex gap-2">
-                      <div className="flex flex-col gap-1 p-2 bg-white rounded shadow-lg">
-                        <strong>Thông tin người nhận</strong>
-                        <div>
-                          #{order.customer.id + " - " + order.customer.username}
-                        </div>
-                        <div className="flex gap-2">
-                          <FaHome className="text-primary" />
-                          <div> {order.address}</div>{" "}
-                        </div>
-                      </div>
-                      <div className="flex flex-col gap-1 p-2 max-w-[300px] bg-white rounded shadow-lg">
-                        <strong>Ghi chú</strong>
-                        <div>{order.note}</div>
-                      </div>
-                      <div className="flex flex-col gap-1 p-2 min-w-[250px] bg-white rounded shadow-lg">
-                        <strong>Tổng tiền</strong>
-                        <div className="flex justify-between">
-                          <div>Tạm tính:</div>
-                          <div>{formatPrice(order.total + order.discount)}</div>
-                        </div>
-                        <div className="flex justify-between">
-                          <div>Giảm giá:</div>
-                          <div className="text-orange-400">
-                            -{formatPrice(order.discount)}
-                          </div>
-                        </div>
-                        <div className="flex justify-between">
-                          <strong>Tổng tiền:</strong>
-                          <strong className="text-red-500">
-                            {formatPrice(order.total)}
-                          </strong>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex gap-4">
-                      <strong>Thông tin vận chuyển</strong>
-                      <select
-                        value={selectedStatus}
-                        onChange={handleSelectChange}
-                      >
-                        <option value={ShippingStatus.PENDING}>
-                          {ShippingLabel.PENDING}
-                        </option>
-                        <option value={ShippingStatus.PROCESSING}>
-                          {ShippingLabel.PROCESSING}
-                        </option>
-                        <option value={ShippingStatus.CONFIRMED}>
-                          {ShippingLabel.CONFIRMED}
-                        </option>
-                        <option value={ShippingStatus.RETURNED}>
-                          {ShippingLabel.RETURNED}
-                        </option>
-                        <option value={ShippingStatus.CANCELLED}>
-                          {ShippingLabel.CANCELLED}
-                        </option>
-                        <option value={ShippingStatus.DELAYED}>
-                          {ShippingLabel.DELAYED}
-                        </option>
-                        <option value={ShippingStatus.DELIVERY}>
-                          {ShippingLabel.DELIVERY}
-                        </option>
-                        <option value={ShippingStatus.FAIL}>
-                          {ShippingLabel.FAIL}
-                        </option>
-                        <option value={ShippingStatus.SUCCESS}>
-                          {ShippingLabel.SUCCESS}
-                        </option>
-                      </select>
-                    </div>
-                    <div className="flex flex-col gap-2 p-2 bg-white rounded shadow-lg">
-                      <strong>Sản phẩm</strong>
-                      {order?.orderDetails?.map((detail) => {
-                        return (
-                          <div key={detail.id} className="flex gap-10">
-                            <img
-                              className="w-[92px] rounded h-[92px]"
-                              src={detail.product.images[0].url}
-                              alt=""
-                            />
-                            <div className="flex flex-col max-w-[250px]">
-                              <strong>{detail.product.name}</strong>
-                              <div>{detail.phoneCategory?.name || ""}</div>
-                            </div>
-                            <div>SL: {detail.quantity}</div>
-                            <div>{formatPrice(detail.price)}</div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                    <div className="flex justify-end gap-2">
-                      <button
-                        onClick={() => setViewDetail(false)}
-                        className="px-5 py-2 bg-white rounded-2xl hover:bg-gray-200"
-                      >
-                        Huỷ
-                      </button>
-                      <button
-                        onClick={() => saveChangeOrder(order)}
-                        className="px-5 py-2 bg-primary rounded-2xl bg-opacity-90 hover:bg-opacity-100"
-                      >
-                        Cập nhật
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
               <div className="flex col-span-1 gap-2">
                 <input type="checkbox" className="w-6 " />
                 <div className="">#{order.id}</div>
