@@ -90,6 +90,8 @@ const CartPage = () => {
                 <th className="py-2 w-[50px]"></th>
                 <th className="py-2 font-extrabold ">Sản phẩm</th>
                 <th className="py-2 font-extrabold">Mô tả</th>
+                <th className="py-2 font-extrabold">Phân loại</th>
+
                 <th className="py-2 font-extrabold">Giá</th>
                 <th className="py-2 font-extrabold">Số lượng</th>
                 <th className="py-2 font-extrabold">Tổng</th>

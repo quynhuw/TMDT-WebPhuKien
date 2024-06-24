@@ -2,11 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import UpdateQuantity from "../../../components/Quantity/UpdateQuantity";
 import { CartDetailType, ProductType } from "@/utils/models";
 import { formatPrice } from "@/utils";
-import {
-  getCartsByCustomerId,
-  insertNewCartDetail,
-  updateCarts,
-} from "@/pages/Cart/api";
+import { getCartsByCustomerId, insertNewCartDetail } from "@/pages/Cart/api";
 import { getUserFromSession } from "@/utils/User";
 import { ToastContext } from "@/hooks/ToastMessage/ToastContext";
 
@@ -18,7 +14,7 @@ const InfoProduct: React.FC<ProductProps> = (props) => {
   const [quantity, setQuantity] = useState(1);
   const toast = useContext(ToastContext);
   const [carts, setCarts] = useState<CartDetailType[]>([]);
-  const [isContainQuantity, setIsContainQuantity] = useState(0);
+  const [phoneCatIdeSelected, setPhoneCateIdSelected] = useState<number>(0);
   const user = getUserFromSession();
 
   useEffect(() => {
@@ -30,53 +26,40 @@ const InfoProduct: React.FC<ProductProps> = (props) => {
       toast.showToast("Vui lòng đăng nhập để xem giỏ hàng");
     }
   }, []);
-  useEffect(() => {
-    const isContain = carts.find((cart) => cart.product.id === product.id);
-    if (isContain) {
-      setIsContainQuantity(isContain.quantity);
-    }
-  }, []);
 
   // add products to cart
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const addToCart = async (cartDetail: any) => {
+    if (phoneCatIdeSelected == 0 && product.productPhoneCategories.length > 0) {
+      toast.showToast("Vui lòng chọn phân loại sản phẩm");
+      return;
+    }
+
+    const response = await insertNewCartDetail(cartDetail);
+    response.success && toast.showToast("Thêm vào giỏ hàng thành công");
+    response.success && setCarts([...carts, response.data]);
+    !response.success && toast.showToast("Thêm vào giỏ hàng thất bại");
+  };
 
   const handleAddToCart = () => {
     if (user) {
-      // const cartQuantity = document.querySelector("#cart-quantity")?.innerHTML;
-      // document.querySelector("#cart-quantity")!.innerHTML = (
-      //   Number.parseInt(cartQuantity || "0") + quantity
-      // ).toString();
-      const isContain = carts.filter(
-        (cart) => cart.product.id === product.id
-      )[0];
-      if (isContain) {
-        setIsContainQuantity(isContainQuantity + isContain.quantity);
-        if (isContainQuantity > product.quantity) {
-          return toast.showToast("Vượt quá số lượng sản phẩm có sẵn");
-        }
-        console.log("before update cart", isContainQuantity);
-        console.log("update cart", isContainQuantity + quantity);
-        updateCarts(isContain.id, isContainQuantity + quantity);
-        // console.log("isContainQuantity", isContain.quantity);
-        // console.log("quantity", quantity);
-      } else {
-        const cartDetail = {
-          product: {
-            id: product?.id,
-          },
-          phoneCategory: {
-            id: product?.phoneCategories[0]?.id,
-          },
-          customer: {
-            id: user.id,
-          },
-          quantity: quantity,
-          status: 1,
-        };
-        insertNewCartDetail(cartDetail);
-      }
+      const cartQuantity = document.querySelector("#cart-quantity")?.innerHTML;
+      document.querySelector("#cart-quantity")!.innerHTML = (
+        Number.parseInt(cartQuantity || "0") + quantity
+      ).toString();
+      const cartDetail = {
+        productId: product?.id,
+        phoneCategoryId: phoneCatIdeSelected,
+        customerId: user.id,
+        quantity: quantity,
+      };
+      addToCart(cartDetail);
     } else {
       toast.showToast("Vui lòng đăng nhập để thêm vào giỏ hàng");
     }
+  };
+  const handleSelectPhoneCategory = (phoneCateId: number) => {
+    setPhoneCateIdSelected(phoneCateId);
   };
 
   return (
@@ -104,14 +87,29 @@ const InfoProduct: React.FC<ProductProps> = (props) => {
         <p className="text-[25px] font-extrabold">
           {formatPrice(product.price)}
         </p>
-        {/* <div className="flex items-center gap-x-4">
-            <p className="text-lg">Màu sắc</p>
-            <div className="flex gap-x-2">
-              <div className="h-5 bg-red-600 border rounded-full cursor-pointer aspect-square hover:border-black"></div>
-              <div className="h-5 bg-green-600 border rounded-full cursor-pointer aspect-square hover:border-black"></div>
-              <div className="h-5 bg-blue-600 border rounded-full cursor-pointer aspect-square hover:border-black"></div>
-            </div>
-          </div> */}
+        <div className="flex gap-x-4">
+          <p className="text-lg">Phân loại</p>
+          <div className="grid grid-cols-5 gap-2">
+            {product.productPhoneCategories &&
+              product.productPhoneCategories.map((phCate) => {
+                return (
+                  <p
+                    onClick={() =>
+                      handleSelectPhoneCategory(phCate.phoneCategory.id)
+                    }
+                    key={phCate.phoneCategory.id}
+                    className={`${
+                      phoneCatIdeSelected === phCate.phoneCategory.id
+                        ? "bg-primary"
+                        : ""
+                    } px-4 py-1 text-center text-black border rounded cursor-pointer text-md opacity-80 hover:bg-primary text-nowrap border-stroke`}
+                  >
+                    {phCate.phoneCategory.name}
+                  </p>
+                );
+              })}
+          </div>
+        </div>
         <div className="flex items-center gap-x-4">
           <p className="text-lg">Số lượng</p>
           <UpdateQuantity
